@@ -1,0 +1,437 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+
+  <!--------- job list section start ------- -->
+  <div class="listPage-wrapper job-list">
+    <div class="container">
+      <div class="row">
+
+        <!-- info -->
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+
+          <!-- mobile screen show filter -->
+          <div class="mobile-info-filter">
+            <mat-accordion>
+              <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header [hidden]="getlistLoading">
+                  <mat-panel-title class="font-size-18">
+                    Filter options
+                    <span class="clear-all filter" (click)="onClearFilterPage($event)" tooltip="Clear" flow="up" delay="500">Clear All</span>
+                  </mat-panel-title>
+                  <span class="open-close-btn">
+                      <i class="down material-icons">keyboard_arrow_down</i>
+                      <i class="up material-icons">keyboard_arrow_up</i>
+                  </span>
+                </mat-expansion-panel-header>
+                <div class="company-info-body">
+                  <div class="list-info filter-list">
+                    <div [hidden]="getlistLoading">
+        
+                      <!-- search list -->
+                      <div class="list-info-item search-list">
+                        <div class="list-content">
+                          <div class="search-list-inner">
+                            <ion-searchbar placeholder="Search"  debounce="1000" [(ngModel)]="searchTerm" (ionChange)="searchList($event)"> </ion-searchbar>
+                            <!-- <div class="search-btn">
+                              <i class="fa fa-search" aria-hidden="true"></i>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+        
+                      <!-- location -->
+                      <!-- <div class="list-info-item" *ngIf="getlistData?.city">
+                        <h3>Location</h3>
+                        <div class="list-content list-content-accordian">
+                          <ul>
+                            <li *ngFor="let item of getlistData?.city">
+                              <ion-label>
+                                <ion-checkbox name="checkbox_name" [(ngModel)]="item.isSelected"  slot="end" (ionChange)="onCheckboxSelect(item.id, $event, 'location')" ></ion-checkbox>
+                                {{item?.name}}
+                              </ion-label>
+                            </li>
+                          </ul>
+                        </div>
+                      </div> -->
+
+                      <!-- location -->
+                      <div class="list-info-item">
+                        <h3>Location</h3>
+                        <div class="search-dropdown">
+                          <ng-select  #locationNameSerch
+                          [loading]="selectLoading"
+                          [dropdownPosition]="'bottom'"
+                          placeholder="Location"
+                          [items]="homePageData?.search_bar?.job_city"
+                          bindLabel="name"
+                          name="location_id"
+                          bindValue="id"
+                          [searchable]="false"
+                          [(ngModel)]="model.location_id"
+                          (change)="onChangeselectDropdown(model.location_id,'location')"
+                          [multiple]="true"
+                          >
+                          <ng-template ng-header-tmp>
+                              <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="locationNameSerch.filter($event.target.value)" [autofocus]="true" />
+                          </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+        
+                      <!-- Industry -->
+                      <!-- <div class="list-info-item">
+                        <h3> Area of Interest</h3>
+                        <div class="list-content">
+                          <ng-select  #industryNameSerch
+                            [loading]="selectLoading"
+                            [dropdownPosition]="'bottom'"
+                            placeholder="select Area of Interest"
+                            [items]="getlistData?.industry_type"
+                            bindLabel="name"
+                            name="industry_id"
+                            bindValue="id"
+                            [searchable]="false"
+                            [(ngModel)]="model.industry_id"
+                            (change)="onChangeselectDropdown(model.industry_id,'industry')"
+                            >
+                            <ng-template ng-header-tmp>
+                                <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="industryNameSerch.filter($event.target.value)" [autofocus]="true" />
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div> -->
+
+                      <!-- Qualification -->
+                      <div class="list-info-item">
+                        <h3>Education</h3>
+                        <div class="list-content">
+                          <ng-select  #qualificationNameSerch
+                            [loading]="selectLoading"
+                            [dropdownPosition]="'bottom'"
+                            placeholder="select Education"
+                            [items]="qualificationList"
+                            bindLabel="name"
+                            name="qualification_with_data"
+                            bindValue="id"
+                            [searchable]="false"
+                            [(ngModel)]="model.qualification_with_data"
+                            (change)="onChangeselectDropdown(model.qualification_with_data,'qualification')"
+                            >
+                            <ng-template ng-header-tmp>
+                                <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="qualificationNameSerch.filter($event.target.value)" [autofocus]="true" />
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <!-- Degree -->
+                      <div class="list-info-item">
+                        <h3>Degree</h3>
+                        <div class="list-content">
+                          <ng-select #degreeSearch
+                              [loading]="selectLoadingDepend"
+                              [dropdownPosition]="'bottom'"
+                              placeholder="select Degree"
+                              [items]="degreeList"
+                              bindLabel="name"
+                              bindValue="id"
+                              [searchable]="false"
+                              name="qual_degree_with_data" 
+                              [(ngModel)]="model.qual_degree_with_data"
+                              (change)="onChangeselectDropdown(model.qual_degree_with_data, 'degree')"
+                              appendTo="body"
+                              >
+                              <ng-template ng-header-tmp>
+                                  <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="degreeSearch.filter($event.target.value)" [autofocus]="true" />
+                              </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <!-- Area of Interest  -->
+                      <div class="list-info-item">
+                        <h3>Area of Interest</h3>
+                        <div class="list-content">
+                          <ng-select #interestSearch
+                              [loading]="selectLoadingDepend"
+                              [dropdownPosition]="'bottom'"
+                              placeholder="Select Area of Interest"
+                              [items]="interestList"
+                              bindLabel="name"
+                              bindValue="id"
+                              [searchable]="false"
+                              name="qual_interest_with_data" 
+                              [(ngModel)]="model.qual_interest_with_data" 
+                              (change)="onChangeselectDropdown(model.qual_interest_with_data, 'interest')"
+                              appendTo="body"
+                              >
+                              <ng-template ng-header-tmp>
+                                  <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="interestSearch.filter($event.target.value)" [autofocus]="true" />
+                              </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+
+                      <!-- Subject -->
+                      <div class="list-info-item">
+                        <h3>Subject</h3>
+                        <div class="list-content">
+                          <ng-select #subjectSearch
+                              [loading]="selectLoading"
+                              [dropdownPosition]="'bottom'"
+                              placeholder="Select Subject"
+                              [items]="subjectList"
+                              bindLabel="name"
+                              bindValue="id"
+                              [searchable]="false"
+                              name="qual_subject_with_data" 
+                              [(ngModel)]="model.qual_subject_with_data " 
+                              (change)="onChangeselectDropdown(model.qual_subject_with_data, 'subject')"
+                              appendTo="body"
+                              >
+                              <ng-template ng-header-tmp>
+                                  <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="subjectSearch.filter($event.target.value)" [autofocus]="true" />
+                              </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+        
+                      <!-- company -->
+                      <div class="list-info-item" *ngIf="getlistData?.company">
+                        <h3>Corporate Partner</h3>
+                        <div class="list-content list-content-accordian">
+                          <ul>
+                            <li *ngFor="let item of getlistData?.company">
+                              <ion-label>
+                                <ion-checkbox name="checkbox_name" [(ngModel)]="item.isSelected"  slot="end" (ionChange)="onCheckboxSelect(item.id, $event, 'company')" ></ion-checkbox>
+                                {{item?.name}}
+                              </ion-label>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+        
+                      <!-- job Type -->
+                      <div class="list-info-item">
+                        <h3>Job Type</h3>
+                        <div class="list-content">
+                          <ng-select  #jobTypeNameSerch
+                            [loading]="selectLoading"
+                            [dropdownPosition]="'bottom'"
+                            placeholder="select job Type"
+                            [items]="getlistData?.job_type"
+                            bindLabel="name"
+                            name="jobType_id"
+                            bindValue="id"
+                            [searchable]="false"
+                            [(ngModel)]="model.jobType_id"
+                            (change)="onChangeselectDropdown(model.jobType_id,'jobType')"
+                            >
+                            <ng-template ng-header-tmp>
+                                <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="jobTypeNameSerch.filter($event.target.value)" [autofocus]="true" />
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+        
+                      <!-- Qualification -->
+                      <!-- <div class="list-info-item">
+                        <h3>Education</h3>
+                        <div class="list-content">
+                          <ng-select  #qualificationNameSerch
+                            [loading]="selectLoading"
+                            [dropdownPosition]="'bottom'"
+                            placeholder="select Education"
+                            [items]="getlistData?.qualification"
+                            bindLabel="name"
+                            name="qualification_id"
+                            bindValue="id"
+                            [searchable]="false"
+                            [(ngModel)]="model.qualification_id"
+                            (change)="onChangeselectDropdown(model.qualification_id,'qualification')"
+                            >
+                            <ng-template ng-header-tmp>
+                                <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="qualificationNameSerch.filter($event.target.value)" [autofocus]="true" />
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div> -->
+                    </div>
+        
+                    <!-- loading skeleton (info) -->
+                    <div *ngIf="getlistLoading">
+                      <div class="list-info-item" *ngFor="let item of skeleton">
+                        <h3>
+                          <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+                        </h3>
+                        <div class="list-content">
+                          <ul>
+                            <li>
+                              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                            </li>
+                            <li>
+                              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                            </li>
+                            <li>
+                              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+
+          
+        </div>
+
+        <!-- content -->
+        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
+          <div class="list-right-content">
+
+            <!-- job list data-->
+            <div class="row" *ngIf="fetchItems?.length > 0 && !isListLoading">
+              <div class="col-xs-12 col-sm-12">
+                <div class="job-list-inner">
+                  <ul>
+                    <li *ngFor="let item of fetchItems; let i = index;">
+                      <div class="job-item"  >
+                        <div class="company-logo">
+                          <img *ngIf="item?.company_logo" src="{{file_url}}/{{item?.company_logo}}" /> 
+                          <img *ngIf="!item?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+                        </div>
+                        <div class="job-content">
+                          <h5>{{item?.name}}</h5>
+                          <h6>{{item?.summary}}</h6>
+                          <p>
+                            <span *ngIf="item?.industry_type">
+                              {{item?.industry_type}}
+                            </span>
+                            <span *ngIf="item?.job_type">
+                              {{item?.job_type}}
+                            </span>
+                            <span *ngIf="item?.comma_separeted_qualification">
+                              {{item?.comma_separeted_qualification}}
+                            </span>
+                            <span *ngIf="item?.city">
+                              {{item?.city}}
+                            </span>
+                          </p>
+                        </div>
+                        <div class="view-job-button">
+                          <ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]" (click)="clickItemHighlight(listAlldata.from + i)" [ngClass]="{'hilight_activated': (activeHighlightIndex == listAlldata.from + i)}">
+                            <span class="submitText">View</span>
+                          </ion-button>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- no data found -->
+            <div class="row" *ngIf="fetchItems?.length == 0 && !isListLoading">
+              <div class="col-xs-12 col-sm-12" >
+                <div class="list-no-data">
+                  No Data Found
+                </div>
+              </div>
+            </div>
+
+            <!-- loading skeleton (list) -->
+            <div class="row" *ngIf="isListLoading">
+              <div class="col-xs-12 col-sm-12">
+                <div class="job-list-inner skeleton">
+                  <ul>
+                    <li *ngFor="let item of skeleton" >
+                      <div class="job-item">
+                        <div class="company-logo">
+                            <ion-skeleton-text animated style="width: 100%; margin:0px; height: 50px;"></ion-skeleton-text>
+                        </div>
+                        <div class="job-content">
+                          <h5>
+                            <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+                          </h5>
+                          <h6>
+                            <ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
+                          </h6>
+                          <p>
+                            <span>
+                              <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+                            </span>
+                            <span>
+                                <ion-skeleton-text animated style="width: 90%;"></ion-skeleton-text>
+                            </span>
+                            <span>
+                              <ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+                            </span>
+                          </p>
+                        </div>
+                        <div class="view-job-button">
+                          <ion-skeleton-text animated style="width: 100%; height:30px;"></ion-skeleton-text>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- pagination -->
+          <div class="list-page-pagination" *ngIf="pager.pages && pager.pages.length">
+
+            <!-- referesh button -->
+            <span (click)="onRefreshPage($event)" tooltip="Refresh" flow="up" delay="500" class="list-refersh">
+              <ion-icon class="icon" name="refresh"></ion-icon>
+            </span>
+
+            <ul class="pagination"> <!-- *ngIf="pager.pages && pager.pages.length" -->
+                <li class="circle-border" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(1)" tooltip="First" flow="up" delay="500">
+                      <!-- First -->
+                      <ion-icon name="skip-backward"></ion-icon>
+                    </a>
+                </li>
+                <li class="circle-border" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(pager.currentPage - 1)" tooltip="Previous" flow="up" delay="500">
+                      <!-- Previous -->
+                      <ion-icon name="arrow-dropleft-circle"></ion-icon>
+                    </a>
+                </li>
+                <li> <span class="ran-separator pull-right margin-top-3"></span> </li>
+                <li>
+                    Page <a>{{ pager.currentPage }}</a> of {{ pager.totalPages }} 
+                </li>
+                <li> <span class="ran-separator pull-right margin-top-3"></span> </li>
+                <li class="circle-border" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.currentPage + 1)" tooltip="Next" flow="up" delay="500">
+                      <!-- Next -->
+                      <ion-icon name="arrow-dropright-circle"></ion-icon>
+                    </a>
+                </li>
+                <li class="circle-border" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.totalPages)" tooltip="Last" flow="up" delay="500">
+                      <!-- Last -->
+                      <ion-icon name="skip-forward"></ion-icon>
+                    </a>
+                </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- job list section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>
+

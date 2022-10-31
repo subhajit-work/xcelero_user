@@ -1,0 +1,621 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+
+  <!--------- skill list section start ------- -->
+  <div class="listPage-wrapper">
+    <div class="container">
+      <div class="row">
+
+        <!-- info -->
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+
+          <!-- mobile screen show filter -->
+          <div class="mobile-info-filter">
+            <mat-accordion>
+              <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header [hidden]="getlistLoading">
+                  <mat-panel-title class="font-size-18">
+                    Filter options
+                    <span class="clear-all filter" (click)="onClearFilterPage($event)" tooltip="Clear" flow="up" delay="500">Clear All</span>
+                  </mat-panel-title>
+                  <span class="open-close-btn">
+                      <i class="down material-icons">keyboard_arrow_down</i>
+                      <i class="up material-icons">keyboard_arrow_up</i>
+                  </span>
+                </mat-expansion-panel-header>
+                <div class="company-info-body">
+                  <div class="list-info filter-list">
+                    <!-- <h6 class="filter">
+                      Filter 
+                      <span class="clear-all" (click)="onClearFilterPage($event)" tooltip="Clear" flow="up" delay="500">Clear All</span>
+                    </h6> -->
+                    <div [hidden]="getlistLoading">
+      
+                      <!-- search list -->
+                      <div class="list-info-item search-list">
+                        <div class="list-content">
+                          <div class="search-list-inner">
+                            <ion-searchbar placeholder="Search"  debounce="1000" [(ngModel)]="searchTerm" (ionChange)="searchList($event)"> </ion-searchbar>
+                            <!-- <div class="search-btn">
+                              <i class="fa fa-search" aria-hidden="true"></i>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+      
+                      <!-- ================== skill-list =============== -->
+                      <div>
+                        <!-- Company -->
+                        <div class="list-info-item">
+                          <h3>Skilling Partner</h3>
+                          <div class="list-content">
+                            <ng-select  #CompanyNameSerch
+                              [loading]="selectLoading"
+                              [dropdownPosition]="'bottom'"
+                              placeholder="select Company"
+                              [items]="getlistData?.company"
+                              bindLabel="name"
+                              name="company_id"
+                              bindValue="id"
+                              [searchable]="false"
+                              [(ngModel)]="model.company_id"
+                              (change)="onChangeselectDropdown(model.company_id,'company')"
+                              >
+                              <ng-template ng-header-tmp>
+                                  <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="CompanyNameSerch.filter($event.target.value)" [autofocus]="true" />
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                        </div>
+      
+                        <!-- Category -->
+                        <!-- <div class="list-info-item">
+                          <h3>Courses Offered</h3>
+                          <div class="list-content list-content-accordian">
+                            
+                            <ul>
+                              <li *ngFor="let item of getlistData?.category">
+                                <ion-label [ngClass]="{'main-category':item?.child  && item?.child.length > 0 }">
+                                  <ion-checkbox name="checkbox_name" [(ngModel)]="item.isSelected"  slot="end" (ionChange)="onCheckboxSelect(item.id, $event, '')" ></ion-checkbox>
+                                  {{item?.name}}
+                                  <i *ngIf="item?.child && item?.child.length > 0 && !item.isChildOpen" (click)="opensubCategory($event, item)" class="fa fa-plus" aria-hidden="true"></i>
+                                  <i *ngIf="item.isChildOpen" (click)="opensubCategory($event, item)" class="fa fa-minus" aria-hidden="true"></i>
+                                </ion-label>
+                                <ul *ngIf="item.isChildOpen" class="sub-category" >
+                                  <li *ngFor="let childitem of item?.child">
+                                    <ion-label>
+                                      <ion-checkbox name="checkbox_name" [(ngModel)]="childitem.isSelected"  slot="end" (ionChange)="onCheckboxSelect(childitem.id, $event, '')" ></ion-checkbox>
+                                      {{childitem?.name}}
+                                    </ion-label>
+                                  </li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </div>
+                        </div> -->
+      
+                        <!-- Qualification -->
+                        <div class="list-info-item">
+                          <h3>Education</h3>
+                          <div class="list-content">
+                            <ng-select  #qualificationNameSerch
+                              [loading]="selectLoading"
+                              [dropdownPosition]="'bottom'"
+                              placeholder="select Education"
+                              [items]="qualificationList"
+                              bindLabel="name"
+                              name="qualification_with_data"
+                              bindValue="id"
+                              [searchable]="false"
+                              [(ngModel)]="model.qualification_with_data"
+                              (change)="onChangeselectDropdown(model.qualification_with_data,'qualification')"
+                              >
+                              <ng-template ng-header-tmp>
+                                  <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="qualificationNameSerch.filter($event.target.value)" [autofocus]="true" />
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                        </div>
+
+                        <!-- Degree -->
+                        <div class="list-info-item">
+                          <h3>Degree</h3>
+                          <div class="list-content">
+                            <ng-select #degreeSearch
+                                [loading]="selectLoadingDepend"
+                                [dropdownPosition]="'bottom'"
+                                placeholder="select Degree"
+                                [items]="degreeList"
+                                bindLabel="name"
+                                bindValue="id"
+                                [searchable]="false"
+                                name="qual_degree_with_data" 
+                                [(ngModel)]="model.qual_degree_with_data"
+                                (change)="onChangeselectDropdown(model.qual_degree_with_data, 'degree')"
+                                appendTo="body"
+                                >
+                                <ng-template ng-header-tmp>
+                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="degreeSearch.filter($event.target.value)" [autofocus]="true" />
+                                </ng-template>
+                            </ng-select>
+                          </div>
+                        </div>
+
+                        <!-- Area of Interest  -->
+                        <div class="list-info-item">
+                          <h3>Area of Interest</h3>
+                          <div class="list-content">
+                            <ng-select #interestSearch
+                                [loading]="selectLoadingDepend"
+                                [dropdownPosition]="'bottom'"
+                                placeholder="Select Area of Interest"
+                                [items]="interestList"
+                                bindLabel="name"
+                                bindValue="id"
+                                [searchable]="false"
+                                name="qual_interest_with_data" 
+                                [(ngModel)]="model.qual_interest_with_data" 
+                                (change)="onChangeselectDropdown(model.qual_interest_with_data, 'interest')"
+                                appendTo="body"
+                                >
+                                <ng-template ng-header-tmp>
+                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="interestSearch.filter($event.target.value)" [autofocus]="true" />
+                                </ng-template>
+                            </ng-select>
+                          </div>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="list-info-item">
+                          <h3>Subject</h3>
+                          <div class="list-content">
+                            <ng-select #subjectSearch
+                                [loading]="selectLoading"
+                                [dropdownPosition]="'bottom'"
+                                placeholder="Select Subject"
+                                [items]="subjectList"
+                                bindLabel="name"
+                                bindValue="id"
+                                [searchable]="false"
+                                name="qual_subject_with_data" 
+                                [(ngModel)]="model.qual_subject_with_data " 
+                                (change)="onChangeselectDropdown(model.qual_subject_with_data, 'subject')"
+                                appendTo="body"
+                                >
+                                <ng-template ng-header-tmp>
+                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="subjectSearch.filter($event.target.value)" [autofocus]="true" />
+                                </ng-template>
+                            </ng-select>
+                          </div>
+                        </div>
+      
+                        <!-- location -->
+                        <!-- <div class="list-info-item" *ngIf="getlistData?.city">
+                          <h3>Location</h3>
+                          <div class="list-content list-content-accordian">
+                            <ul>
+                              <li *ngFor="let item of getlistData?.city">
+                                <ion-label>
+                                  <ion-checkbox name="checkbox_name" [(ngModel)]="item.isSelected"  slot="end" (ionChange)="onCheckboxSelect(item.id, $event, 'location')" ></ion-checkbox>
+                                  {{item?.name}}
+                                </ion-label>
+                              </li>
+                            </ul>
+                          </div>
+                        </div> -->
+                        <!-- location -->
+                        <div class="list-info-item">
+                          <h3>Location</h3>
+                          <div class="search-dropdown">
+                            <ng-select  #locationNameSerch
+                            [loading]="selectLoading"
+                            [dropdownPosition]="'bottom'"
+                            placeholder="Location"
+                            [items]="homePageData?.search_bar?.skill_city"
+                            bindLabel="name"
+                            name="location_id"
+                            bindValue="id"
+                            [searchable]="false"
+                            [(ngModel)]="model.location_id"
+                            (change)="onChangeselectDropdown(model.location_id,'location')"
+                            [multiple]="true"
+                            >
+                            <ng-template ng-header-tmp>
+                                <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="locationNameSerch.filter($event.target.value)" [autofocus]="true" />
+                            </ng-template>
+                            </ng-select>
+                          </div>
+                        </div>
+      
+                        <!-- Industry -->
+                        <!-- <div class="list-info-item">
+                          <h3> Area of Interest</h3>
+                          <div class="list-content">
+                            <ng-select  #industryNameSerch
+                              [loading]="selectLoading"
+                              [dropdownPosition]="'bottom'"
+                              placeholder="select Area of Interest"
+                              [items]="getlistData?.industry_type"
+                              bindLabel="name"
+                              name="industry_id"
+                              bindValue="id"
+                              [searchable]="false"
+                              [(ngModel)]="model.industry_id"
+                              (change)="onChangeselectDropdown(model.industry_id,'industry')"
+                              >
+                              <ng-template ng-header-tmp>
+                                  <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="industryNameSerch.filter($event.target.value)" [autofocus]="true" />
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                        </div> -->
+                      </div>
+      
+                      <!-- ================== skill-list-continuous =============== -->
+                      <div>
+                        
+                        <!-- Branch -->
+                        <div class="list-info-item">
+                          <h3>Branch</h3>
+                          <div class="list-content">
+                            <ng-select  #branchNameSerch
+                              [loading]="selectLoading"
+                              [dropdownPosition]="'bottom'"
+                              placeholder="select Branch"
+                              [items]="getlistData?.branch"
+                              bindLabel="name"
+                              name="branch_id"
+                              bindValue="id"
+                              [searchable]="false"
+                              [(ngModel)]="model.branch_id"
+                              (change)="onChangeselectDropdown(model.branch_id,'branch')"
+                              >
+                              <ng-template ng-header-tmp>
+                                  <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="branchNameSerch.filter($event.target.value)" [autofocus]="true" />
+                              </ng-template>
+                            </ng-select>
+                          </div>
+                        </div>
+      
+                        <!-- if offline then show -->
+                        <div *ngIf="skill_offline">
+                          <!-- Industry -->
+                          <!-- <div class="list-info-item">
+                            <h3> Area of Interest</h3>
+                            <div class="list-content">
+                              <ng-select  #industryNameSerch
+                                [loading]="selectLoading"
+                                [dropdownPosition]="'bottom'"
+                                placeholder="select Area of Interest"
+                                [items]="getlistData?.industry_type"
+                                bindLabel="name"
+                                name="industry_id"
+                                bindValue="id"
+                                [searchable]="false"
+                                [(ngModel)]="model.industry_id"
+                                (change)="onChangeselectDropdown(model.industry_id,'industry')"
+                                >
+                                <ng-template ng-header-tmp>
+                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="industryNameSerch.filter($event.target.value)" [autofocus]="true" />
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                          </div> -->
+      
+                          <!-- location -->
+                          <!-- <div class="list-info-item" *ngIf="getlistData?.city">
+                            <h3>Location</h3>
+                            <div class="list-content list-content-accordian">
+                              <ul>
+                                <li *ngFor="let item of getlistData?.city">
+                                  <ion-label>
+                                    <ion-checkbox name="checkbox_name" [(ngModel)]="item.isSelected"  slot="end" (ionChange)="onCheckboxSelect(item.id, $event, 'location')" ></ion-checkbox>
+                                    {{item?.name}}
+                                  </ion-label>
+                                </li>
+                              </ul>
+                            </div>
+                          </div> -->
+      
+                          <!-- Price -->
+                          <!-- <div class="list-info-item">
+                            <h3>Price</h3>                            <div class="list-content range-slider" *ngIf="!getlistLoading">
+                              <div class="list-range-filter">
+                                <ng5-slider [(value)]="minValueRange" [(highValue)]="maxValueRange" [options]="priceOptions" (mouseup)="valueChangeRangeSlider($event, minValueRange, maxValueRange)"></ng5-slider>
+                              </div>
+                            </div>
+                          </div> -->
+      
+                          <!-- Rating -->
+                          <div class="list-info-item">
+                            <h3>Rating</h3>
+                            <div class="list-content">
+                              <ng-select  #ratingNameSerch
+                                [loading]="selectLoading"
+                                [dropdownPosition]="'bottom'"
+                                placeholder="select Rating"
+                                [items]="getlistData?.rating"
+                                bindLabel="name"
+                                name="rating_id"
+                                bindValue="id"
+                                [searchable]="false"
+                                [(ngModel)]="model.rating_id"
+                                (change)="onChangeselectDropdown(model.rating_id,'rating')"
+                                >
+                                <ng-template ng-header-tmp>
+                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="ratingNameSerch.filter($event.target.value)" [autofocus]="true" />
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                          </div>
+
+                          <!-- Price -->
+                          <div class="list-info-item" >
+                            <h3>Price</h3>
+                            <!-- <div class="list-content range-slider">
+                              <div class="list-range-filter">
+                                <ng5-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (valueChange)="valueChangeRangeSlider($event, minValue, maxValue)"></ng5-slider>
+                              </div>
+                            </div> -->
+                            <div class="list-content range-slider" *ngIf="!getlistLoading">
+                              <div class="list-range-filter">
+                                <ng5-slider [(value)]="minValueRange" [(highValue)]="maxValueRange" [options]="priceOptions" (mouseup)="valueChangeRangeSlider($event, minValueRange, maxValueRange)"></ng5-slider>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+      
+                        <!-- if online then show-->
+                        <div *ngIf="!skill_offline">
+                          <!-- Industry -->
+                          <div class="list-info-item">
+                            <h3> Area of Interest</h3>
+                            <div class="list-content">
+                              <ng-select  #industryNameSerch
+                                [loading]="selectLoading"
+                                [dropdownPosition]="'bottom'"
+                                placeholder="select Area of Interest"
+                                [items]="getlistData?.industry_type"
+                                bindLabel="name"
+                                name="industry_id"
+                                bindValue="id"
+                                [searchable]="false"
+                                [(ngModel)]="model.industry_id"
+                                (change)="onChangeselectDropdown(model.industry_id,'industry')"
+                                >
+                                <ng-template ng-header-tmp>
+                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="industryNameSerch.filter($event.target.value)" [autofocus]="true" />
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                          </div>
+      
+                          <!-- Price -->
+                          <div class="list-info-item">
+                            <h3>Price</h3>
+                            <!-- <div class="list-content range-slider">
+                              <div class="list-range-filter">
+                                <ng5-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (valueChange)="valueChangeRangeSlider($event, minValue, maxValue)"></ng5-slider>
+                              </div>
+                            </div> -->
+                            <div class="list-content range-slider" *ngIf="!getlistLoading">
+                              <div class="list-range-filter">
+                                <ng5-slider [(value)]="minValueRange" [(highValue)]="maxValueRange" [options]="priceOptions" (mouseup)="valueChangeRangeSlider($event, minValueRange, maxValueRange)"></ng5-slider>
+                              </div>
+                            </div>
+                          </div>
+      
+                          <!-- Rating -->
+                          <div class="list-info-item">
+                            <h3>Rating</h3>
+                            <div class="list-content">
+                              <ng-select  #ratingNameSerch
+                                [loading]="selectLoading"
+                                [dropdownPosition]="'bottom'"
+                                placeholder="select Rating"
+                                [items]="getlistData?.rating"
+                                bindLabel="name"
+                                name="rating_id"
+                                bindValue="id"
+                                [searchable]="false"
+                                [(ngModel)]="model.rating_id"
+                                (change)="onChangeselectDropdown(model.rating_id,'rating')"
+                                >
+                                <ng-template ng-header-tmp>
+                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="ratingNameSerch.filter($event.target.value)" [autofocus]="true" />
+                                </ng-template>
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+      
+                      </div>
+                    </div>
+      
+                    <!-- loading skeleton (info) -->
+                    <div *ngIf="getlistLoading">
+                      <div class="list-info-item" *ngFor="let item of skeleton">
+                        <h3>
+                          <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+                        </h3>
+                        <div class="list-content">
+                          <ul>
+                            <li>
+                              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                            </li>
+                            <li>
+                              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                            </li>
+                            <li>
+                              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+        
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+
+        <!-- content -->
+        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">
+          <div class="list-right-content">
+
+            <!-- skill data list -->
+            <div class="row" *ngIf="!isListLoading">
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" *ngFor="let item of fetchItems; let i = index;" >
+                <!-- routerDirection="backword" -->
+                <div class="list-item" (click)="clickItemHighlight(listAlldata.from + i)" [ngClass]="{'hilight_activated': (activeHighlightIndex == listAlldata.from + i)}"  > 
+                  <div style="outline: none;" [routerLink]="['/', 'skill-details', 'skill', item.id]">
+                    <div class="image" [ngClass]="{'no-image': !item?.image}">
+                      <a href="javascript:void(0)">
+                        <!-- <img alt="logo" src="assets/images/1.jpg" alt=""> -->
+                        <img *ngIf="item?.image" class="img-scale employee-img profile" src="{{file_url}}/{{item?.image}}" />
+
+                        <img *ngIf="!item?.image" class="img-scale employee-img profile" src="assets/images/no-bg-img.jpg" /> 
+                        
+                      </a>
+                    </div>
+                    <div class="list-item-content">
+                      <h6 *ngIf="item?.category.length > 0">
+                        <span class="cartegory-item" *ngFor="let category of item?.category; let i = index; let lastInd = last;">
+                          {{category?.name}}
+                          <i *ngIf="!lastInd">,</i>
+                        </span>
+                      </h6>
+                      <div class="list-item-content-inner">
+                        <h4 *ngIf="item?.name">{{item?.name}}</h4>
+                        <p *ngIf="item?.short_description">{{item?.short_description}}</p>
+                        <div class="price" *ngIf="item?.price != 0" style="height: 30px;">
+                          <h4> <span class="rupis">&#8377;</span>  {{item?.price}}</h4>
+                        </div>
+                        <div class="rating-show not-clickable">
+                          <!-- rating component call here -->
+                          <!-- item.intRating always need to number type not string -->
+                          <app-rating [rating]='item?.intRating' [itemId]='item?.id' (ratingClick)='ratingComponentClick($event)'></app-rating>
+                        </div>
+                        <div class="custom-btn">
+                          <ion-button size="default" style="margin-top: 4px;">
+                            <span class="submitText" *ngIf="item?.price != 0">Buy</span>
+                            <span class="submitText" *ngIf="item?.price == 0">View</span>
+                          </ion-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="custom-checkbox">
+                    <ion-checkbox name="checkbox_name" [(ngModel)]="item.isSelected"  slot="end" (ionChange)="onCheckboxSelect(item, $event)" ></ion-checkbox>
+                      <p>Add to compare</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- no data found -->
+            <div class="row" *ngIf="fetchItems?.length == 0 && !isListLoading">
+              <div class="col-xs-12 col-sm-12" >
+                <div class="list-no-data">
+                  No Data Found
+                </div>
+              </div>
+            </div>
+
+            <!-- loading skeleton (list) -->
+            <div class="row" *ngIf="isListLoading">
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" *ngFor="let item of skeleton" >
+                <div class="list-item skeleton">
+                  <div class="image">
+                    <a href="javascript:void(0)">
+                      <ion-skeleton-text animated style="width: 100%; margin:0px; height: 142px;"></ion-skeleton-text>
+                    </a>
+                  </div>
+                  <div class="list-item-content">
+                    <h6>
+                      <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                    </h6>
+                    <div class="list-item-content-inner">
+                      <h4>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                      </h4>
+                      <div class="price">
+                        <h4> 
+                          <ion-skeleton-text animated style="width: 25%"></ion-skeleton-text> 
+                        </h4>
+                      </div>
+                      <div class="custom-btn skeleton">
+                        <ion-button size="default">
+                            <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+                        </ion-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- pagination -->
+          <div class="list-page-pagination" *ngIf="pager.pages && pager.pages.length">
+
+            <!-- referesh button -->
+            <span (click)="onRefreshPage($event)" tooltip="Refresh" flow="up" delay="500" class="list-refersh">
+              <ion-icon class="icon" name="refresh"></ion-icon>
+            </span>
+
+            <ul class="pagination"> <!-- *ngIf="pager.pages && pager.pages.length" -->
+                <li class="circle-border" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(1)" tooltip="First" flow="up" delay="500">
+                      <!-- First -->
+                      <ion-icon name="skip-backward"></ion-icon>
+                    </a>
+                </li>
+                <li class="circle-border" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(pager.currentPage - 1)" tooltip="Previous" flow="up" delay="500">
+                      <!-- Previous -->
+                      <ion-icon name="arrow-dropleft-circle"></ion-icon>
+                    </a>
+                </li>
+                <li> <span class="ran-separator pull-right margin-top-3"></span> </li>
+                <li>
+                    Page <a>{{ pager.currentPage }}</a> of {{ pager.totalPages }} 
+                </li>
+                <li> <span class="ran-separator pull-right margin-top-3"></span> </li>
+                <li class="circle-border" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.currentPage + 1)" tooltip="Next" flow="up" delay="500">
+                      <!-- Next -->
+                      <ion-icon name="arrow-dropright-circle"></ion-icon>
+                    </a>
+                </li>
+                <li class="circle-border" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.totalPages)" tooltip="Last" flow="up" delay="500">
+                      <!-- Last -->
+                      <ion-icon name="skip-forward"></ion-icon>
+                    </a>
+                </li>
+            </ul>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="custom-btn compare" *ngIf="checkedList.length > 0">
+      <ion-button (click)="gotoCompare(checkedList)" [ngClass]="{disabled:checkedList.length > 5}" size="default" style="margin-top: 4px;">
+        <ion-icon name="git-compare"></ion-icon>
+        <span class="submitText">Compare</span>
+      </ion-button>
+    </div>
+
+  </div>
+  <!-- skill list section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>
+

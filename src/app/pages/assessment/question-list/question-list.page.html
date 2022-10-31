@@ -1,0 +1,312 @@
+<ion-content  [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+	<!-- common header show -->
+	<common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+
+	<!-- subheader -->
+	<div class="detals-subheader question_subheader" *ngIf="!isListLoading">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+					<div class="detals-subheader-inner">
+						{{listAlldata?.subject_name}}
+					</div>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+						<div class="details-purches apply-job">
+							<span class="question-answer-count" *ngIf="parms_action_name != 'result'">{{selectQuestion.length}}/{{listAlldata?.total}}</span>
+							<!-- <span class="question-answer-count" *ngIf="parms_action_name == 'result'">{{listAlldata?.total}}</span> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Question List page start -->
+	<div class="question-list-wrapper question" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+			
+		<div class="container" [ngClass]="{'question_result_show': parms_action_name == 'result'}">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-7 col-lg-8">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							
+							<!--question answer -->
+							<!-- <ion-radio-group>
+								<ion-card>
+									<ion-list-header>
+									    <ion-label>
+									    	<span class="question-no">1</span>
+									    	<span class="question">What does HTML stand for?</span>
+									    </ion-label>
+									</ion-list-header>
+									<ion-item class="right-answer">
+									    <ion-label>Apple</ion-label>
+									    <ion-radio slot="start" value="apple"></ion-radio>
+									</ion-item>
+
+									<ion-item class="wrong-answer">
+									    <ion-label>Grape</ion-label>
+									    <ion-radio slot="start" value="grape" checked></ion-radio>
+									</ion-item>
+
+									<ion-item>
+									    <ion-label>Cherry</ion-label>
+									    <ion-radio slot="start" value="cherry"></ion-radio>
+									</ion-item>
+								</ion-card>
+							</ion-radio-group> -->
+							
+							<!-- Every question -->
+							<div *ngIf="!isListLoading">
+								<ion-radio-group >
+									<ion-card *ngFor="let item of fetchItems; let i = index">
+										<!-- {{item.options | json}} -->
+										<ion-list-header>
+											<ion-label>
+												<span class="question-no">{{listAlldata.from + i}}</span>
+												<span class="question">{{item?.name}}</span>
+											</ion-label>
+										</ion-list-header>
+										<ion-item *ngFor="let option of item?.options ; let ind = index" [ngClass]="{'correct_answer': (item?.answer_given == option?.option_id) && item?.is_correct == 1 , 'wrong_answer':  (item?.answer_given == option?.option_id) && item?.is_correct == 0}">
+											<input type="radio" id="optionId{{i}}{{ind}}" [value]="ind+1" name="{{item.id}}" [(ngModel)]="option.givenAnswer" (ngModelChange)="OnselectRadioQuestionAnswer($event, listAlldata.from + i, option.givenAnswer, item)">
+											<label for="optionId{{i}}{{ind}}">{{option?.name}}</label>
+											<!-- <ion-label >{{option?.name}}</ion-label>
+											<ion-radio slot="start" [value]="ind+1" ></ion-radio> -->
+
+											<!-- option > {{option.givenAnswer}} -->
+
+										</ion-item>
+									</ion-card>
+								</ion-radio-group>
+							</div>
+
+							<!-- skeleton loading  start-->
+							<div class="skeleton-question" *ngIf="isListLoading">
+									<ion-radio-group >
+										<ion-card *ngFor="let item of skeletonArray">
+											<ion-list-header>
+												<ion-label style="width: 60%;">
+													<ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text>
+												</ion-label>
+											</ion-list-header>
+											<ion-item>
+												<ion-skeleton-text animated style="width: 30%; "></ion-skeleton-text>
+											</ion-item>
+											<ion-item>
+												<ion-skeleton-text animated style="width: 30%; "></ion-skeleton-text>
+											</ion-item>
+											<ion-item>
+												<ion-skeleton-text animated style="width: 30%; "></ion-skeleton-text>
+											</ion-item>
+										</ion-card>
+									</ion-radio-group>
+							</div>
+
+
+
+							<!-- pagination -->
+							<div class="list-page-pagination my-custom-pagination" *ngIf="pager.pages && pager.pages.length">
+
+								<!-- referesh button -->
+								<!-- <span (click)="onRefreshPage($event)" tooltip="Refresh" flow="up" delay="500" class="list-refersh">
+									<ion-icon class="icon" name="refresh"></ion-icon>
+								</span> -->
+
+								<ul class="pagination"> <!-- *ngIf="pager.pages && pager.pages.length" -->
+										
+										<li class="circle-border Previous" [ngClass]="{disabled:pager.currentPage === 1}">
+												<a (click)="setPage(pager.currentPage - 1)">
+													<!-- Previous -->
+													<!-- <ion-icon name="arrow-dropleft-circle"></ion-icon> -->
+													<!-- <ion-button class="next-button" size="default" >
+														Previous
+													</ion-button> -->
+
+													<div class="custom-btn">
+														<ion-button class="next-button" size="default">
+															<span class="submitText">Previous</span>
+														</ion-button>
+													</div>
+												</a>
+										</li>
+
+										<!-- submit button -->
+										<li class="submit_questionAnswer" *ngIf="fetchItemsAll.length == listAlldata.total">
+											<form  #questionAnswerForm="ngForm" (ngSubmit)="onSubmitQuestionAnswer(questionAnswerForm)" *ngIf="parms_action_name != 'result'">
+												<div class="subscribtion-custom-btn">
+
+													<!-- hidden input field value for question answer -->
+													<div *ngFor="let item of selectQuestion;let i= index">
+														<!--question answer-->
+														<input type="hidden" name="question[{{i}}][answer_given]" [(ngModel)]="item.selectOptionIndex" required>
+
+														<!--id-->
+														<input type="hidden" name="question[{{i}}][question_id]" [(ngModel)]="item.id" required>
+
+														<!--subject_id-->
+														<input type="hidden" name="question[{{i}}][subject_id]" [(ngModel)]="item.subject_id" required>
+													</div>
+
+												  <ion-button size="default"
+													type="submit" [disabled]="!questionAnswerForm.valid"
+													tooltip="Submit" flow="up">
+													<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+													<span class="submitText">{{form_submit_text}}</span>
+												  </ion-button>
+												</div>
+											</form>
+										</li>
+
+
+										<li class="circle-border" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+												<a (click)="setPage(pager.currentPage + 1)" >
+													<!-- Next -->
+													<!-- <ion-icon name="arrow-dropright-circle"></ion-icon> -->
+													<!-- <ion-button class="next-button" size="default">
+														Next
+													</ion-button> -->
+
+													<div class="custom-btn">
+														<ion-button class="next-button" size="default">
+															<span class="submitText">Next</span>
+														</ion-button>
+													</div>
+												</a>
+										</li>
+								</ul>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+				<!-- info -->
+				<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4" *ngIf="!isListLoading">
+
+					<!-- Latest skill -->
+					<div class="detailspage-right-item recommended-skill">
+						<h3>Latest Skill</h3>
+						<div class="job-list-inner">
+							<ul>
+								<li *ngFor="let item of commonPageData?.latest_skill; let i = index;">
+									<div class="list-item" [routerLink]="['/', 'skill-details', 'skill', item.id]" > 
+										<div class="image">
+											<a href="javascript:void(0)">
+												<img *ngIf="item?.image" src="{{file_url}}/{{item?.image}}" /> 
+												<img *ngIf="!item?.image" src="assets/images/no-bg-img.jpg" /> 
+											</a>
+										</div>
+										<div class="list-item-content">
+											<div class="list-item-content-inner">
+												<h4 class="title">{{item?.name}} </h4>
+												<p>{{item?.short_description}}</p>
+												<div class="price" *ngIf="item?.price != 0">
+													<h4> <span class="rupis">&#8377;</span> {{item?.price}}</h4>
+												</div>
+												<div class="custom-btn">
+													<ion-button size="default">
+														<span class="submitText" *ngIf="item?.price != 0">Buy</span>
+														<span class="submitText" *ngIf="item?.price == 0">View</span>
+													</ion-button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li *ngIf="commonPageData?.latest_skill && commonPageData?.latest_skill.length == 0">
+									<p class="no-rightside-data"> No Skill Found</p>
+								</li>
+							</ul>
+						</div>
+					</div>
+						
+					<!-- Latest job -->
+					<div class="detailspage-right-item ">
+						<h3>Latest Job</h3>
+						<div class="job-list-inner">
+							<ul>
+								<li *ngFor="let item of commonPageData?.latest_job; let i = index;">
+									<div class="job-item"  >
+										<div class="company-logo">
+											<img *ngIf="item?.company_logo" src="{{file_url}}/{{item?.company_logo}}" /> 
+											<img *ngIf="!item?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+										</div>
+										<div class="job-content">
+											<h5>{{item?.name}}</h5>
+											<p>
+												<span *ngIf="item?.industry_type">
+													{{item?.industry_type}}
+												</span>
+												<span *ngIf="item?.job_type">
+													{{item?.job_type}}
+												</span>
+												<span *ngIf="item?.comma_separeted_qualification">
+													{{item?.comma_separeted_qualification}}
+												</span>
+												<span *ngIf="item?.city">
+													{{item?.city}}
+												</span>
+											</p>
+										</div>
+										<div class="view-job-button">
+											<ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]">
+												<span class="submitText">View</span>
+											</ion-button>
+										</div>
+									</div>
+								</li>
+								<li *ngIf="commonPageData?.latest_job && commonPageData?.latest_job.length == 0">
+									<p class="no-rightside-data">No Job Found</p>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+						
+				</div>
+
+				<!-- skeleton loading  start-->
+				<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" *ngIf="isListLoading">
+					<div class="detailspage-right-item">
+						<h3>
+							<ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+						</h3>
+						<ul>
+							<li>
+								<h5>
+									<ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+								</h5>
+								<p>
+									<ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+								</p>
+							</li>
+						</ul>
+					</div>
+
+					<div class="detailspage-right-item">
+						<h3>
+							<ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+						</h3>
+						<ul>
+							<li>
+								<h5>
+									<ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+								</h5>
+								<p>
+									<ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+								</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- skeleton loading  end-->
+
+			</div>
+		</div>
+	</div>
+	<!-- Question list page end -->
+
+	<!-- common footer show -->
+	<common-footer></common-footer>
+</ion-content>

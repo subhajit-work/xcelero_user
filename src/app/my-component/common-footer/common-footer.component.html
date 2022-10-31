@@ -1,0 +1,151 @@
+<ion-footer class="footer-wrapper">
+  <!-- <ion-toolbar color="lightBlue" text-center>
+    <ion-title class="font-size-12 text-decoration-none powered-by">
+      Powered By: <a class="padding-left-5 powered-by-text" href="https://rnjcs.in/?utm_source=bms&utm_medium=dugarinvestment" target="_blank">RNJ Consultancy Services</a>
+    </ion-title>
+  </ion-toolbar> -->
+  <div class="top-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-3">
+          <div class="footer-inMobile">
+            <h5>{{footerPageData?.variable?.footer_top_1_title?.value}}</h5>
+            <ul>
+              <li *ngFor="let item of footerPageData?.menu_data?.footer_menu_1?.list">
+                <p (click)="goToPage(item?.module_url, item)">{{item?.module_display_name}}</p>
+              </li>
+            </ul>
+          </div>
+          
+          <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h5>{{footerPageData?.variable?.footer_top_1_title?.value}}</h5>
+                </mat-panel-title>
+                <span class="open-close-btn">
+                    <i class="down material-icons">add</i>
+                    <i class="up material-icons">remove</i>
+                </span>
+              </mat-expansion-panel-header>
+              <ul>
+                <li *ngFor="let item of footerPageData?.menu_data?.footer_menu_1?.list">
+                  <p (click)="goToPage(item?.module_url, item)">{{item?.module_display_name}}</p>
+                </li>
+              </ul>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+          <div class="footer-inMobile">
+            <h5>{{footerPageData?.variable?.footer_top_2_title?.value}}</h5>
+            <ul>
+              <li *ngFor="let item of footerPageData?.menu_data?.footer_menu_2?.list">
+                <p (click)="goToPage(item?.module_url, item)">{{item?.module_display_name}}</p>
+              </li>
+            </ul>
+          </div>
+
+          <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h5>{{footerPageData?.variable?.footer_top_2_title?.value}}</h5>
+                </mat-panel-title>
+                <span class="open-close-btn">
+                    <i class="down material-icons">add</i>
+                    <i class="up material-icons">remove</i>
+                </span>
+              </mat-expansion-panel-header>
+              <ul>
+                <li *ngFor="let item of footerPageData?.menu_data?.footer_menu_2?.list">
+                  <p (click)="goToPage(item?.module_url, item)">{{item?.module_display_name}}</p>
+                </li>
+              </ul>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <div class="col-xs-12 col-sm-2">
+          <div class="footer-inMobile">
+            <h5>{{footerPageData?.variable?.footer_top_3_title?.value}}</h5>
+            <ul>
+              <li *ngFor="let item of footerPageData?.menu_data?.footer_menu_3?.list">
+                <p (click)="goToPage(item?.module_url, item)">{{item?.module_display_name}}</p>
+              </li>
+            </ul>
+          </div>
+
+          <mat-accordion>
+            <mat-expansion-panel expanded >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h5>{{footerPageData?.variable?.footer_top_3_title?.value}}</h5>
+                </mat-panel-title>
+                <span class="open-close-btn">
+                    <i class="down material-icons">add</i>
+                    <i class="up material-icons">remove</i>
+                </span>
+              </mat-expansion-panel-header>
+              <ul>
+                <li *ngFor="let item of footerPageData?.menu_data?.footer_menu_3?.list">
+                  <p (click)="goToPage(item?.module_url, item)">{{item?.module_display_name}}</p>
+                </li>
+              </ul>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+          <h4>{{footerPageData?.variable?.subscriber_title?.value}}</h4>
+          <p class="subscribtion-text">{{footerPageData?.variable?.subscriber_content?.value}}</p>
+          <div class="newsletter-subscribe">
+            <form  #newsletterSubscribeForm="ngForm" (ngSubmit)="onSubmitSubscribetion(newsletterSubscribeForm)" >
+              <ion-input type="email" name="email" [(ngModel)]="model.email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" clearInput email required></ion-input>
+              <div class="subscribtion-custom-btn">
+                <ion-button size="default"
+                  type="submit"  
+                    tooltip="SUBSCRIBE" flow="up">
+                  <ion-spinner name="crescent" *ngIf="form_submit_text"></ion-spinner> 
+                  <!-- <span class="submitText">{{form_submit_text}}</span> -->
+                  <span class="submitText">{{footerPageData?.variable?.subscriber_button_text?.value}}</span>
+                </ion-button>
+                </div>
+            </form>
+          </div>
+          <div class="newsleter-card">
+            <ul>
+              <li *ngFor="let item of footerPageData?.banner_data?.payment_type">
+                <a href="javascript:void(0)">
+                  <img src="{{file_url}}/{{item?.image}}" />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <p>{{footerPageData?.variable?.copyright_text?.value}} </p>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <ul class="header-social "  >
+            <!-- <li *ngFor="let item of footerPageData?.sitedetails?.social">
+              <a href="{{item?.link}}" target="_blank">
+                <i class="fa fa-{{item?.icon}}" aria-hidden="true"></i>
+              </a>
+            </li> -->
+            <li>
+              <span class="power_by_text" style="padding-right: 5px;">Powered By:</span>
+              <a class="powerby" href="https://rnjcs.in/?utm_source={{footerPageData?.sitedetails?.link}}&utm_medium=footer" target="_blank">
+                RNJ Consultancy Services
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-footer>

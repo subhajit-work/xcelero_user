@@ -1,0 +1,338 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+	<!-- common header show -->
+	<common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  	
+	<!-- Dashboard page start -->
+	<div class="dashboard-wrapper dashboard">
+		<div class="container" *ngIf="!viewLoadData">
+			<div class="row">
+				<div class="profile">
+					<ion-card>
+						<div class="row">
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								<!-- <div class="profile_photo">
+									<ion-item>
+									  <ion-avatar slot="start">
+									    <img src="https://cdn.betteru.in/wp-content/uploads/2018/11/23195912/1-Month-Playablo_CC.jpg">
+									  </ion-avatar>
+									  <ion-label>
+									    <h2>Sudin Mondal</h2>
+									  </ion-label>
+									</ion-item>
+								</div> -->
+								<div class="ion-padding">
+									<div class="row profile-information" >
+										<!-- Product image -->
+										<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" *ngIf="viewData?.studentinfo?.id" [routerLink]="['/', 'profile', viewData?.studentinfo?.id]" style="outline: none; cursor: pointer;">
+											<img *ngIf="viewData?.
+											studentinfo?.profile" src="{{file_url}}/{{viewData?.studentinfo?.profile}}" /> 
+                        					<img *ngIf="!viewData?.studentinfo?.profile" src="assets/images/no-bg-img.jpg" />
+										</div>
+										<!-- Product details -->
+										<div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+											<h4 *ngIf="viewData?.studentinfo?.full_name && viewData?.studentinfo?.id"  [routerLink]="['/', 'profile', viewData?.studentinfo?.id]" style="outline: none;cursor: pointer;">{{viewData?.studentinfo?.full_name}}</h4>
+											<p *ngIf="viewData?.studentinfo?.email">{{viewData?.studentinfo?.email}}</p>
+											<p *ngIf="viewData?.studentinfo?.mobile">{{viewData?.studentinfo?.mobile}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								<div style="text-align: -webkit-center" class="profile_details">
+									<!-- <img style="width: 50px" src="https://www.nuaire.com/media/wysiwyg/chart.png"> -->
+									<!-- You can now use it in app.component.html -->
+									<circle-progress
+									[percent]="viewData?.profile_complete_status?.value"
+									[radius]="100"
+									[outerStrokeWidth]="16"
+									[innerStrokeWidth]="8"
+									[outerStrokeColor]="'#78C000'"
+									[innerStrokeColor]="'#C7E596'"
+									[animation]="true"
+									[animationDuration]="300"
+									></circle-progress>
+									
+								</div>
+								<div class="profile_details">
+									<ion-label class="ion-float-right black"  >
+										<b>{{viewData?.profile_complete_status?.message}}</b>
+										<i *ngIf="viewData?.studentinfo?.id" [routerLink]="['/', 'student-register', 'edit', viewData?.studentinfo?.id]">Edit</i>
+									</ion-label>
+								</div>
+							</div>
+						</div>
+					</ion-card>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 product_information">
+					<ion-card class="order" [routerLink]="['/', 'order-list']">
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+								<ion-avatar slot="start">
+									<ion-icon name="cart"></ion-icon>
+								</ion-avatar>
+								<h2>My Order</h2>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+								<h2 class="count">{{viewData?.user_ordered_skill}}</h2>
+							</div>
+						</div>
+					</ion-card>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 product_information">
+					<ion-card class="job" [routerLink]="['/', 'job-apply-list']">
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+								<ion-avatar slot="start">
+									<ion-icon name="briefcase"></ion-icon>
+								</ion-avatar>
+								<h2>Applied Job</h2>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+								<h2 class="count">{{viewData?.user_applied_job}}</h2>
+							</div>
+						</div>
+					</ion-card>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 product_information">
+					<ion-card class="assesment" [routerLink]="['/', 'attempted-assessment']">
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+								<ion-avatar slot="start">
+									<ion-icon name="school"></ion-icon>
+								</ion-avatar>
+								<h2>Assessments</h2>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+								<h2 class="count">{{viewData?.user_attempted_assesment}}</h2>
+							</div>
+						</div>
+					</ion-card>
+				</div>
+			</div>
+
+			<!-- Skill list -->
+			<div class="row table-row">
+				<h6>Skills matched with your Education<span (click)="onclickNext('skill')" class="more-view-page">View more</span></h6>
+				<!-- content -->
+		        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="table-list-page" style="overflow-x:auto;">
+					  <h5 *ngIf="viewData?.skill_data.length < 1"><i class="material-icons">priority_high</i>No Skills</h5>
+		              <table *ngIf="viewData?.skill_data.length > 0" class="list-page-table">
+		                <thead>
+		                  <tr>
+		        
+		                    <th style="padding-left: 3px;">
+		                      <span>
+		                          <ion-icon style="zoom:2.0;" name="information"></ion-icon>
+		                      </span>
+		                    </th>
+		        
+		                    <!-- table header -->
+		                    <th *ngFor="let th of tableHeaderData ">
+		                      <span>{{th.display_name}}</span>
+		                    </th>
+		        
+		                  </tr>
+		                </thead>
+		                <tbody>
+		                  <tr *ngFor="let item of viewData?.skill_data; let i = index">
+		                      <td data-title="ID">
+		                        <span>{{i + 1}}</span>
+		                        <!-- <span>{{listAlldata.from + i}}</span> -->
+		                      </td>
+		        
+		                      <!-- table data -->
+		                        <td *ngFor="let th of tableHeaderData " [hidden]="th.is_default == 0">
+		        
+		                          <!-- updated_on date -->
+		                          <span *ngIf="th.column_name === 'name'">
+		                            {{item.name}}
+		                          </span>
+		        
+		                          <!-- added_on date -->
+		                          <span class="description" *ngIf="th.column_name === 'short_description'">
+									<span class="description-txt">{{item.short_description}}</span>
+									
+									<div class="view-job-button">
+										<ion-button size="default" type="button" [routerLink]="['/', 'skill-details', 'skill', item.id]">
+											<span class="submitText">View</span>
+										</ion-button>
+									</div>
+								  </span>
+								  
+		                        </td>
+		        
+		                  </tr>
+		                </tbody>
+		              </table>
+		            </div>
+		        </div>
+			</div>
+
+			<!-- Job list -->
+			<div class="row table-row">
+				<h6>Jobs matched with your Education<span (click)="onclickNext('job')" class="more-view-page">View more</span></h6>
+				<!-- content -->
+		        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="table-list-page" style="overflow-x:auto;">
+						<h5 *ngIf="viewData?.job_data.length < 1"><i class="material-icons">priority_high</i>No Jobs</h5>
+		              <table *ngIf="viewData?.job_data.length > 0" class="list-page-table">
+		                <thead>
+		                  <tr>
+		        
+		                    <th style="padding-left: 3px;">
+		                      <span>
+		                          <ion-icon style="zoom:2.0;" name="information"></ion-icon>
+		                      </span>
+		                    </th>
+		        
+		                    <!-- table header -->
+		                    <th *ngFor="let th of skilltableHeaderData ">
+		                      <span>{{th.display_name}}</span>
+		                    </th>
+		        
+		                  </tr>
+		                </thead>
+		                <tbody>
+		                  <tr *ngFor="let item of viewData?.job_data; let i = index">
+		                      <td data-title="ID">
+		                        <span>{{i + 1}}</span>
+		                        <!-- <span>{{listAlldata.from + i}}</span> -->
+		                      </td>
+		        
+		                        <td *ngFor="let th of skilltableHeaderData " [hidden]="th.is_default == 0">
+		        
+		                          <!-- updated_on date -->
+		                          <span *ngIf="th.column_name === 'name'">
+		                            {{item.name}}
+		                          </span>
+		        
+		                          <!-- added_on date -->
+		                          <span class="description" *ngIf="th.column_name === 'skill'">
+									
+									<span class="description-txt">{{item.skill}}</span>
+									
+									<div class="view-job-button">
+										<ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]">
+											<span class="submitText">View</span>
+										</ion-button>
+									</div>
+		                          </span>
+		                        </td>
+		        
+		                  </tr>
+		                </tbody>
+		              </table>
+		            </div>
+		        </div>
+			</div>
+		</div>
+		
+
+		<!-- skeleton loading  start-->
+		<div class="container" *ngIf="viewLoadData">
+			<div class="row">
+				<div class="profile">
+					<ion-card>
+						<div class="row">
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								<div class="ion-padding">
+									<div class="row profile-information">
+										<!-- Product image -->
+										<div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+											<ion-skeleton-text animated style="width: 100px; height: 100px; "></ion-skeleton-text>
+										</div>
+										<!-- Product details -->
+										<div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+											<h4>
+												<ion-skeleton-text animated style="width: 70%; "></ion-skeleton-text>
+											</h4>
+											<p>
+												<ion-skeleton-text animated style="width: 60%; "></ion-skeleton-text>
+											</p>
+											<p>
+												<ion-skeleton-text animated style="width:50%; "></ion-skeleton-text>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+								<div class="profile_details">
+								<ion-skeleton-text animated style="width: 130px; height:130px; border-radius: 50%; top: 0;top: 0; right: auto; left: 50%; -webkit-transform: translateX(-50%); transform: translateX(-50%);"></ion-skeleton-text>
+								</div>
+							</div>
+						</div>
+					</ion-card>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 product_information">
+					<ion-card>
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+								<ion-avatar slot="start">
+									<ion-skeleton-text animated style="width: 45px; height: 45px; "></ion-skeleton-text>
+								</ion-avatar>
+								<h2>
+									<ion-skeleton-text animated style="width: 60%; text-align: center; margin-left: 37px;"></ion-skeleton-text>
+								</h2>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+								<h2 class="count">
+									<ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text>
+								</h2>
+							</div>
+						</div>
+					</ion-card>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 product_information">
+					<ion-card>
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+								<ion-avatar slot="start">
+									<ion-skeleton-text animated style="width: 45px; height: 45px; "></ion-skeleton-text>
+								</ion-avatar>
+								<h2>
+									<ion-skeleton-text animated style="width: 60%; text-align: center; margin-left: 37px;"></ion-skeleton-text>
+								</h2>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+								<h2 class="count">
+									<ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text>
+								</h2>
+							</div>
+						</div>
+					</ion-card>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 product_information">
+					<ion-card>
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+								<ion-avatar slot="start">
+									<ion-skeleton-text animated style="width: 45px; height: 45px; "></ion-skeleton-text>
+								</ion-avatar>
+								<h2>
+									<ion-skeleton-text animated style="width: 60%; text-align: center; margin-left: 37px;"></ion-skeleton-text>
+								</h2>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+								<h2 class="count">
+									<ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text>
+								</h2>
+							</div>
+						</div>
+					</ion-card>
+				</div>
+			</div>
+		</div>
+		<!-- skeleton loading  end-->
+
+	</div>
+	<!-- Dashboard page end -->
+
+	<!-- common footer show -->
+	<common-footer></common-footer>
+</ion-content>

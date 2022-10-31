@@ -1,0 +1,192 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)" >
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!--------- details section start ------- -->
+  <div class="student-register-wrapper associate-us-wrapper profile-wrapper assessment subject">
+
+    <div class="container" *ngIf="!viewLoadData">
+      <div class="row">
+
+        <div class="col-xs-12 col-sm-6 col-md-7 col-lg-8 ">
+          <div class="student-register-inner" *ngIf="!getlistLoading">
+            <h6>Assessment Subject</h6>
+            <div class="assessment-inner subject-list" >
+              <h4> {{getlistData?.asessment_subject?.short_description}} </h4>
+              <p [innerHTML]="getlistData?.asessment_subject?.description"></p>
+              
+              <div class="row" style="margin-top: 30px;">
+                <div class="col-xs-12 col-sm-8 offset-sm-2" *ngFor="let item of subjectList; let i = index;">
+                  <div class="assessment-inner sublect-inner">
+                    <div class="job-item"  >
+                      <div class="job-content">
+                        <h5>{{item?.name}}</h5>
+                        <p>
+                          <span >
+                            {{item?.description}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="view-job-button">
+                        <!-- <ion-button class="next-button" size="default" shape="round" [routerLink]="['/', 'assessments', item?.id]" (click)="clickItemHighlight(listAlldata?.from + i)" [ngClass]="{'hilight_activated': (activeHighlightIndex == listAlldata?.from + i)}">
+                          <ion-icon slot="start" name="next"></ion-icon>
+                          Start
+                        </ion-button> -->
+
+                        <div class="custom-btn">
+                          <ion-button class="next-button" size="default" [routerLink]="['/', 'assessments', item?.id]" (click)="clickItemHighlight(listAlldata?.from + i)" [ngClass]="{'hilight_activated': (activeHighlightIndex == listAlldata?.from + i)}">
+                            <span class="submitText">Start</span>
+                          </ion-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12">
+                  <div *ngIf="subjectList && subjectList.length == 0 && !viewLoadData" class="assessment-inner sublect-inner no-data-found subject">
+                    No Data Found
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- info -->
+				<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4" *ngIf="!getlistLoading">
+
+          <!-- Latest Skill -->
+          <div class="detailspage-right-item recommended-skill">
+            <h3>Latest Skill</h3>
+            <div class="job-list-inner">
+              <ul>
+                <li *ngFor="let item of commonPageData?.latest_skill; let i = index;">
+                  <div class="list-item" [routerLink]="['/', 'skill-details', 'skill', item.id]" > 
+                    <div class="image">
+                      <a href="javascript:void(0)">
+                        <img *ngIf="item?.image" src="{{file_url}}/{{item?.image}}" /> 
+                        <img *ngIf="!item?.image" src="assets/images/no-bg-img.jpg" /> 
+                      </a>
+                    </div>
+                    <div class="list-item-content">
+                      <div class="list-item-content-inner">
+                        <h4 class="title">{{item?.name}} </h4>
+                        <p>{{item?.short_description}}</p>
+                        <div class="price" *ngIf="item?.price != 0">
+                          <h4> <span class="rupis">&#8377;</span> {{item?.price}}</h4>
+                        </div>
+                        <div class="custom-btn">
+                          <ion-button size="default">
+                            <span class="submitText" *ngIf="item?.price != 0">Buy</span>
+                            <span class="submitText" *ngIf="item?.price == 0">View</span>
+                          </ion-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li *ngIf="commonPageData?.latest_skill && commonPageData?.latest_skill.length == 0">
+                  <p class="no-rightside-data"> No Skill Found</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Latest job -->
+          <div class="detailspage-right-item ">
+            <h3>Latest Job</h3>
+            <div class="job-list-inner">
+              <ul>
+                <li *ngFor="let item of commonPageData?.latest_job; let i = index;">
+                  <div class="job-item"  >
+                    <div class="company-logo">
+                      <img *ngIf="item?.company_logo" src="{{file_url}}/{{item?.company_logo}}" /> 
+                      <img *ngIf="!item?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+                    </div>
+                    <div class="job-content">
+                      <h5>{{item?.name}}</h5>
+                      <p>
+                        <span *ngIf="item?.industry_type">
+                          {{item?.industry_type}}
+                        </span>
+                        <span *ngIf="item?.job_type">
+                          {{item?.job_type}}
+                        </span>
+                        <span *ngIf="item?.comma_separeted_qualification">
+                          {{item?.comma_separeted_qualification}}
+                        </span>
+                        <span *ngIf="item?.city">
+                          {{item?.city}}
+                        </span>
+                      </p>
+                    </div>
+                    <div class="view-job-button">
+                      <ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]">
+                        <span class="submitText">View</span>
+                      </ion-button>
+                    </div>
+                  </div>
+                </li>
+                <li *ngIf="commonPageData?.latest_job && commonPageData?.latest_job.length == 0">
+                  <p class="no-rightside-data">No Job Found</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+        </div>
+
+      </div>
+    </div>
+
+    <!-- skeleton loading  start-->
+    <div class="container" *ngIf="viewLoadData">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8">
+          <div class="student-register-inner" style="border: 1px solid var(--ion-color-gray);" >
+            <h6 style="background: var(--ion-color-gray);">
+              <ion-skeleton-text animated style="width: 30%; "></ion-skeleton-text>
+            </h6>
+            <div class="assessment-inner subject-list" >
+              <h4>
+                <ion-skeleton-text animated style="width: 60%; "></ion-skeleton-text>
+              </h4>
+              <p>
+                  <ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text><ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text><ion-skeleton-text animated style="width: 90%; "></ion-skeleton-text>
+              </p>
+              <div class="row" style="margin-top: 30px;">
+                <div class="col-xs-12 col-sm-8 offset-sm-2" *ngFor="let item of skeletonArray">
+                  <div class="assessment-inner sublect-inner">
+                    <div class="job-item"  >
+                      <div class="job-content">
+                        <h5>
+                          <ion-skeleton-text animated style="width: 60%; "></ion-skeleton-text>
+                        </h5>
+                        <p>
+                          <span >
+                            <ion-skeleton-text animated style="width: 40%; "></ion-skeleton-text>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="view-job-button">
+                        <ion-skeleton-text animated style="width: 80px; height:35px; border-radius: 50px;"></ion-skeleton-text>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- skeleton loading  end-->
+
+  </div>
+  <!-- details section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>

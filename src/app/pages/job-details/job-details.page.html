@@ -1,0 +1,362 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!--------- details section start ------- -->
+  <div class="detailsPage-wrapper job-details">
+
+    <!-- subheader -->
+    <div class="detals-subheader" *ngIf="!viewLoadData">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="detals-subheader-inner">
+              <div class="company-image">
+                <img *ngIf="viewData?.company_logo" src="{{file_url}}/{{viewData?.company_logo}}" /> 
+                <img *ngIf="!viewData?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+              </div>
+              <div class="company-info">
+                <h4>{{viewData?.name}}</h4>
+                <p *ngIf="viewData?.company">
+                  {{viewData?.company}} 
+                  <span *ngIf="viewData?.show_company_details == '1'">
+                      - <span>( {{viewData?.email}} </span> / <span> {{viewData?.phone}} )</span>
+                  </span>
+                  <!-- <span> -- {{viewData?.comma_separeted_city}}</span> -->
+                </p>
+                <h5 class="post"> <b>Posted : </b>{{viewData?.posted_days_ago}}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="details-purches apply-job" *ngIf="viewData?.job_expired == 0">
+              <div class="price">
+                Interested in this Job?
+              </div>
+              <div class="details-purches-button">
+                <div class="custom-btn">
+                  <ion-button size="default" *ngIf="viewData?.job_applied == 0">
+                    <span *ngIf="viewData?.link == ''" (click)="onApplyJob($event, viewData)" class="submitText">Apply</span>
+                    <a *ngIf="viewData?.link != ''" href="{{viewData?.link}}" target="_blank">
+                      <span class="submitText">Apply</span>
+                    </a>
+                  </ion-button>
+                  <ion-button size="default" color="success" [disabled]="true" *ngIf=" viewData?.job_applied == 1">
+                    <span class="submitText">Applied</span>
+                  </ion-button>
+                </div>
+              </div>
+            </div>
+            <div class="details-purches" *ngIf="viewData?.job_expired == 1">
+              <div class="price expired" >
+               Job Expired
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- job info subheader -->
+    <div class="job-info-subheader" *ngIf="!viewLoadData">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            <ul>
+              <li *ngIf="viewData?.industry_type">
+                <div class="job-info-header-item">
+                  <span> Area of Interest :</span> 
+                  {{viewData?.industry_type}}
+                </div>
+              </li>
+              <li *ngIf="viewData?.job_type">
+                <div class="job-info-header-item">
+                  <span>Employment :</span> 
+                  {{viewData?.job_type}}
+                </div>
+              </li>
+              <li *ngIf="viewData?.exp_qualification">
+                <div class="job-info-header-item">
+                  <span>Experience :</span> 
+                  {{viewData?.exp_qualification}}
+                </div>
+              </li>
+              <li *ngIf="viewData?.salary_min">
+                <div class="job-info-header-item">
+                  <span>Salary :</span> 
+                  {{viewData?.salary_min}} - {{viewData?.salary_max}} / {{viewData?.salary_type_value}}
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-page-inner">
+      <div class="container">
+        <div class="row">
+
+          <!-- skeleton loading  start-->
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" *ngIf="viewLoadData">
+            <div class="detailspage-image">
+              <ion-skeleton-text animated style="width: 100%; height: 150px;"></ion-skeleton-text>
+            </div>
+
+            <div class="detailsPage-content sub-header-details" >
+              <div class="sub-header-details">
+                <div class="header-item">
+                  <ul>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="detailsPage-content item" >
+              <h3 class="heading">
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" *ngIf="viewLoadData">
+              <div class="detailspage-right-item">
+                <h3>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </h3>
+                <ul>
+                  <li>
+                    <h5>
+                      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h5>
+                    <p>
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="detailspage-right-item">
+                <h3>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </h3>
+                <ul>
+                  <li>
+                    <h5>
+                      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h5>
+                    <p>
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              
+          </div>
+          <!-- skeleton loading  end-->
+
+          <!-- content -->
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+
+            <!-- summary -->
+            <div class="detailsPage-content  margin-top-0" *ngIf="viewData">
+              <h3 class="heading">Job Description</h3>
+              <p innerHTML="{{viewData?.summary}}"></p>
+              <ul class="job-sort-description">
+                <li *ngIf="viewData?.job_type">
+                  <p><span>Job Type : </span> 
+                    {{viewData?.job_type}}
+                  </p>
+                </li>
+                <li *ngIf="viewData?.date_time && viewData?.job_type == 'Walk-In'">
+                  <p><span>Walk-In Date : </span> 
+                    {{viewData?.date_time | date:'dd MMM yyy : h:mm a'}}
+                  </p>
+                </li>
+                <li *ngIf="viewData?.comma_separeted_qualification">
+                  <p><span>Education : </span> 
+                    {{viewData?.comma_separeted_qualification}}
+                  </p>
+                </li>
+                <li *ngIf="viewData?.notice_period">
+                  <p><span>Notice Period : </span> 
+                    {{viewData?.notice_period}} Days
+                  </p>
+                </li>
+                <li *ngIf="viewData?.position">
+                  <p><span>Position : </span> 
+                    {{viewData?.position}} 
+                  </p>
+                </li>
+                <li *ngIf="viewData?.comma_separeted_city">
+                  <p><span>Job Location : </span> 
+                    {{viewData?.comma_separeted_city}}
+                  </p>
+                </li>
+              </ul>
+            </div>
+            
+            <!-- skill -->
+            <div class="detailsPage-content item" *ngIf="viewData?.skill">
+              <h3 class="heading">Skill</h3>
+              <p innerHTML="{{viewData?.skill}}"></p>
+            </div>
+
+            <!-- Responsibility -->
+            <div class="detailsPage-content item" *ngIf="viewData?.responsibility">
+              <h3 class="heading">Responsibility</h3>
+              <p innerHTML="{{viewData?.responsibility}}"></p>
+            </div>
+
+            <!-- benefit -->
+            <div class="detailsPage-content item benefit" *ngIf="viewData?.benefit">
+              <h3 class="heading">Benefit</h3>
+              <p innerHTML="{{viewData?.benefit}}"></p>
+            </div>
+
+            <!-- company_description -->
+            <div class="detailsPage-content item" *ngIf="viewData?.company_description">
+              <h3 class="heading">Company Profile </h3>
+              <p innerHTML="{{viewData?.company_description}}"></p>
+              <div class="rating-show not-clickable  details-page" > 
+                <!-- rating component call here -->
+                <!-- item.company_rating always need to number type not string -->
+                <app-rating [rating]='viewData?.company_rating' [itemId]='viewData?.id' (ratingClick)='ratingComponentClick($event)'></app-rating>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- info -->
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+
+            <!-- Related job -->
+            <div class="detailspage-right-item">
+              <h3>Related Job</h3>
+              <div class="job-list-inner">
+                <ul>
+                  <li *ngFor="let item of viewData?.related_job; let i = index;">
+                    <div class="job-item"  >
+                      <div class="company-logo">
+                        <img *ngIf="item?.company_logo" src="{{file_url}}/{{item?.company_logo}}" /> 
+                        <img *ngIf="!item?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+                      </div>
+                      <div class="job-content">
+                        <h5>{{item?.name}}</h5>
+                        <p>
+                          <span *ngIf="item?.industry_type">
+                            {{item?.industry_type}}
+                          </span>
+                          <span *ngIf="item?.job_type">
+                            {{item?.job_type}}
+                          </span>
+                          <span *ngIf="item?.comma_separeted_qualification">
+                            {{item?.comma_separeted_qualification}}
+                          </span>
+                          <span *ngIf="item?.city">
+                            {{item?.city}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="view-job-button">
+                        <ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]">
+                          <span class="submitText">View</span>
+                        </ion-button>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="viewData?.related_job && viewData?.related_job.length == 0">
+                    <p class="no-rightside-data">No Job Found</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="detailspage-right-item recommended-skill">
+              <h3>Recommended Skill</h3>
+              <div class="job-list-inner">
+                <ul>
+                  <li *ngFor="let item of viewData?.related_skill; let i = index;">
+                    <div class="list-item" [routerLink]="['/', 'skill-details', 'skill', item.id]" > 
+                      <div class="image">
+                        <a href="javascript:void(0)">
+                          <img *ngIf="item?.image" src="{{file_url}}/{{item?.image}}" /> 
+                          <img *ngIf="!item?.image" src="assets/images/no-bg-img.jpg" /> 
+                        </a>
+                      </div>
+                      <div class="list-item-content">
+                        <div class="list-item-content-inner">
+                          <h4 class="title">{{item?.name}} </h4>
+                          <p>{{item?.short_description}}</p>
+                          <div class="price" *ngIf="item?.price != 0">
+                            <h4> <span class="rupis">&#8377;</span> {{item?.price}}</h4>
+                          </div>
+                          <div class="custom-btn" >
+                            <ion-button size="default">
+                              <span class="submitText" *ngIf="item?.price != 0">Buy</span>
+                              <span class="submitText" *ngIf="item?.price == 0">View</span>
+                            </ion-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="viewData?.related_skill && viewData?.related_skill.length == 0">
+                    <p class="no-rightside-data"> No Skill Found</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- details section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>
+

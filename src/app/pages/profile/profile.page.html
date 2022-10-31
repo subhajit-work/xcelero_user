@@ -1,0 +1,577 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+	<!-- common header show -->
+	<common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  	
+	<!-- Profile page start -->
+	<div class="profile-wrapper table-list-page">
+		<div class="container">
+
+			<!-- skeleton loading  start -->
+			<div class="profile-box skeleton" *ngIf="editLoading">
+			  	<div class="row">
+			  		<div class="profile_img">
+			  			<div>
+								<ion-skeleton-text animated style="width: 200px; height: 200px; border-radius: 50%;"></ion-skeleton-text>
+				  			<p>
+									<ion-skeleton-text animated style="width: 200px;"></ion-skeleton-text>
+								</p>
+			  			</div>
+			  			
+			  		</div>
+			  	</div>
+			    <div class="row profile-info-inner">
+			    	
+			    	<!-- Mobile -->
+			    	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
+			    		<div class="view-element">
+								<span><b>
+										<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+								</b></span>
+							</div>
+			    	</div>
+			    	<!-- Email -->
+			    	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4" >
+								<div class="view-element">
+									<span><b>
+											<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+									</b></span>
+								</div>
+			    	</div>
+			    	<!-- Gender -->
+			    	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4" >
+								<div class="view-element">
+									<span><b>
+											<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+									</b></span>
+								</div>
+			    	</div>
+			    	<!-- Date of Birth -->
+			    	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
+								<div class="view-element">
+									<span><b>
+											<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+									</b></span>
+								</div>
+			    	</div>
+			    	<!-- Country -->
+			    	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4" >
+								<div class="view-element">
+									<span><b>
+											<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+									</b></span>
+								</div>
+			    	</div>
+			    	<!-- State -->
+			    	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4" >
+			    		<div class="view-element">
+									<span><b>
+											<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+									</b></span>
+								</div>
+			    	</div>
+			    	<!-- City -->
+			    	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4" >
+								<div class="view-element">
+									<span><b>
+											<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+									</b></span>
+								</div>
+			    	</div>
+			    	<!-- Address Line 1 -->
+			    	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4" >
+							<div class="view-element">
+								<span><b>
+										<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+								</b></span>
+							</div>
+			    	</div>
+			    </div>
+			    <!-- Qualification -->
+			    <ion-card >
+						<ion-card-header color="gray">
+								<ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
+						</ion-card-header>
+			      	<ion-card-content>
+			      		<div style="overflow-x: auto;">
+					        <table class="list-page-table">
+								<thead>
+									<tr>
+										<th style="padding-left: 3px;">
+											<span>
+												<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+										<th>
+											<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+										<th>
+											<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+										<th>
+											<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+										<th>
+											<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr >
+												<td data-title="ID">
+													<span>
+														<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+												<td>
+													<span>
+															<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+												<td>
+													<span>
+															<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+												<td>
+													<span>
+														<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+												<td>
+													<span>
+														<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+										</tr>
+									</tbody>
+							</table>
+				        </div>
+			      	</ion-card-content>
+					</ion-card>
+					
+			    <!-- Certification -->
+					<ion-card >
+							<ion-card-header>
+									<ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
+							</ion-card-header>
+								<ion-card-content>
+									<div style="overflow-x: auto;">
+										<table class="list-page-table">
+									<thead>
+										<tr>
+											<th style="padding-left: 3px;">
+												<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+												</span>
+											</th>
+											<th>
+												<span>
+														<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+												</span>
+											</th>
+											<th>
+												<span>
+														<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+												</span>
+											</th>
+											<th>
+												<span>
+														<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+												</span>
+											</th>
+											<th>
+												<span>
+														<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+												</span>
+											</th>
+										</tr>
+									</thead>
+										<tbody>
+											<tr >
+													<td data-title="ID">
+														<span>
+															<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+														</span>
+													</td>
+													<td>
+														<span>
+																<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+														</span>
+													</td>
+													<td>
+														<span>
+																<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+														</span>
+													</td>
+													<td>
+														<span>
+															<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+														</span>
+													</td>
+													<td>
+														<span>
+															<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+														</span>
+													</td>
+											</tr>
+										</tbody>
+								</table>
+									</div>
+								</ion-card-content>
+						</ion-card>
+
+			    <!-- Experience -->
+			     <ion-card >
+						<ion-card-header>
+								<ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
+						</ion-card-header>
+			      	<ion-card-content>
+			      		<div style="overflow-x: auto;">
+					        <table class="list-page-table">
+								<thead>
+									<tr>
+										<th style="padding-left: 3px;">
+											<span>
+												<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+										<th>
+											<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+										<th>
+											<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+										<th>
+											<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+										<th>
+											<span>
+													<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+											</span>
+										</th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr >
+												<td data-title="ID">
+													<span>
+														<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+												<td>
+													<span>
+															<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+												<td>
+													<span>
+															<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+												<td>
+													<span>
+														<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+												<td>
+													<span>
+														<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+													</span>
+												</td>
+										</tr>
+									</tbody>
+							</table>
+				        </div>
+			      	</ion-card-content>
+					</ion-card>
+			</div>
+			
+			<div class="profile-box" *ngIf="!editLoading">
+			  	<div class="row">
+			  		<div class="profile_img">
+			  			<div>
+								<img *ngIf="ProfileData?.image" src="{{file_url}}/{{ProfileData?.image}}" />
+								<img *ngIf="!ProfileData?.image" src="assets/images/noimage.jpg" />
+
+				  			<!-- <span class="img-edit">
+									<ion-icon slot="icon-only" name="create"></ion-icon>
+								</span> -->
+
+				  			<p>{{ProfileData?.fname}} {{ProfileData?.lname}}</p>
+			  			</div>
+			  			
+			  		</div>
+			  	</div>
+			    <div class="row profile-info-inner">
+			    	<!-- Edit Button -->
+			    	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			    		<ion-button class="ion-float-right profile-edit" size="small" shape="round" *ngIf="ProfileData?.id" [routerLink]="['/', 'student-register', 'edit', ProfileData?.id]">Edit</ion-button>
+			    	</div>
+			    	<!-- Mobile -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.mobile">
+			    		<div class="view-element">
+								<i class="smartphone material-icons">smartphone</i>
+								<span class="text-name-bold">Mobile :</span>
+								<span><b>{{ProfileData?.mobile}}</b></span>
+							</div>
+			    	</div>
+			    	<!-- Email -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.email">
+			    		<div class="view-element">
+								<i class="email material-icons">email</i> 
+								<span class="text-name-bold">Email :</span>
+								<span><b>{{ProfileData?.email}}</b></span>
+	            </div>
+			    	</div>
+			    	<!-- Gender -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.gender_name">
+			    		<div class="view-element">
+								<i class="wc material-icons">wc</i> 
+								<span class="text-name-bold">Gender :</span>
+								<span><b>{{ProfileData?.gender_name}}</b></span>
+							</div>
+			    	</div>
+			    	<!-- Date of Birth -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.dob">
+			    		<div class="view-element">
+								<i class="date_range material-icons">date_range</i> 
+								<span class="text-name-bold">Date of Birth :</span>
+								<span><b>{{ProfileData?.dob | date:'dd MMM yyy'}}</b></span>
+							</div>
+			    	</div>
+			    	<!-- Country -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.country">
+			    		<div class="view-element">
+								<i class="outlined_flag material-icons">outlined_flag</i> 
+								<span class="text-name-bold">Country :</span>
+								<span><b>{{ProfileData?.country}}</b></span>
+							</div>
+			    	</div>
+			    	<!-- State -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.state">
+			    		<div class="view-element">
+								<i class="satellite material-icons">satellite</i> 
+								<span class="text-name-bold">State :</span>
+								<span><b>{{ProfileData?.state}}</b></span>
+							</div>
+			    	</div>
+			    	<!-- City -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.city">
+			    		<div class="view-element">
+								<i class="near_me material-icons">near_me</i> 
+								<span class="text-name-bold">City :</span>
+								<span><b>{{ProfileData?.city}}</b></span>
+							</div>
+			    	</div>
+			    	<!-- Address Line 1 -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.address_1 || ProfileData?.address_2">
+			    		<div class="view-element">
+								<i class="home material-icons">home</i> 
+								<span class="text-name-bold">Address :</span>
+								<span><b>{{ProfileData?.address_1}}, {{ProfileData?.address_2}}</b></span>
+							</div>
+						</div>
+						<!-- pin -->
+			    	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" *ngIf="ProfileData?.pin">
+			    		<div class="view-element">
+								<i class="near_me material-icons">near_me</i> 
+								<span class="text-name-bold">Pin :</span>
+								<span><b>{{ProfileData?.pin}}</b></span>
+							</div>
+			    	</div>
+					</div>
+					
+			    <!-- Education -->
+			    <ion-card *ngIf="ProfileData?.qualification && ProfileData?.qualification.length > 0">
+					<ion-card-header>
+						Education
+					</ion-card-header>
+			      	<ion-card-content>
+			      		<div style="overflow-x: auto;">
+					        <table class="list-page-table">
+								<thead>
+									<tr>
+										<th style="padding-left: 3px;">
+											<span>
+											    <ion-icon style="zoom:2.0;" name="information"></ion-icon>
+											</span>
+										</th>
+										<th>
+											<span>Name</span>
+										</th>
+										<th>
+											<span>Degree</span>
+										</th>
+										<th>
+											<span>Board</span>
+										</th>
+										<th>
+											<span>Passout Year</span>
+										</th>
+										<th>
+											<span>Marks</span>
+										</th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr *ngFor="let item of ProfileData?.qualification; let i = index;">
+												<td data-title="ID">
+													<span>{{i+1}}</span>
+												</td>
+												<td>
+													<span>{{item?.name}}</span>
+												</td>
+												<td>
+													<span>{{item?.degree}}</span>
+												</td>
+												<td>
+													<span>{{item?.board}}</span>
+												</td>
+												<td>
+													<span>{{item?.passout_year}}</span>
+												</td>
+												<td>
+													<span>{{item?.marks}}</span>
+												</td>
+										</tr>
+									</tbody>
+							</table>
+				        </div>
+			      	</ion-card-content>
+					</ion-card>
+					
+			    <!-- Certification -->
+			    <ion-card  *ngIf="ProfileData?.certification && ProfileData?.certification.length > 0">
+					<ion-card-header>
+						Certification
+					</ion-card-header>
+			      	<ion-card-content>
+			      		<div style="overflow-x: auto;">
+					        <table class="list-page-table">
+								<thead>
+									<tr>
+										<th style="padding-left: 3px;">
+											<span>
+											    <ion-icon style="zoom:2.0;" name="information"></ion-icon>
+											</span>
+										</th>
+										<th>
+											<span>Name</span>
+										</th>
+										<th>
+											<span>Start Date</span>
+										</th>
+										<th>
+											<span>End Date</span>
+										</th>
+										<th>
+											<span>Duration (in days)</span>
+										</th>
+									</tr>
+								</thead>
+									<tbody>
+											<tr *ngFor="let item of ProfileData?.certification; let i = index;">
+													<td data-title="ID">
+														<span>{{i+1}}</span>
+													</td>
+													<td>
+														<span>{{item?.name}}</span>
+													</td>
+													<td>
+														<span>{{item?.start_date }}</span>
+													</td>
+													<td>
+														<span>{{item?.end_date }}</span>
+													</td>
+													<td>
+														<span>{{item?.duration}} Days</span>
+													</td>
+											</tr>
+									</tbody>
+								</table>
+				        </div>
+			      	</ion-card-content>
+			    </ion-card>
+			    <!-- Experience -->
+			    <ion-card *ngIf="ProfileData?.experience && ProfileData?.experience.length > 0">
+					<ion-card-header>
+						Experience
+					</ion-card-header>
+			      	<ion-card-content>
+			      		<div style="overflow-x: auto;">
+					        <table class="list-page-table">
+								<thead>
+									<tr>
+										<th style="padding-left: 3px;">
+											<span>
+											    <ion-icon style="zoom:2.0;" name="information"></ion-icon>
+											</span>
+										</th>
+										<th>
+											<span>Name</span>
+										</th>
+										<th>
+											<span>Start Date</span>
+										</th>
+										<th>
+											<span>End Date</span>
+										</th>
+										<th>
+											<span>Position</span>
+										</th>
+									</tr>
+								</thead>
+									<tbody>
+											<tr *ngFor="let item of ProfileData?.experience; let i = index;">
+													<td data-title="ID">
+														<span>{{i+1}}</span>
+													</td>
+													<td>
+														<span>{{item?.name}}</span>
+													</td>
+													<td>
+														<span>{{item?.start_date }}</span>
+													</td>
+													<td>
+														<span>{{item?.end_date }}</span>
+													</td>
+													<td>
+														<span>{{item?.position}}</span>
+													</td>
+											</tr>
+									</tbody>
+								</table>
+				        </div>
+			      	</ion-card-content>
+			    </ion-card>
+			    <div class="row">
+			    	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 custom-btn resume-view" *ngIf="ProfileData?.resume">
+			    		<p>Your Resume</p>
+			    		<ion-button class="download-resume" shape="round" (click)="onExport('single', ProfileData?.resume)">
+									<ion-icon slot="start" name="download"></ion-icon>
+									Download Your Resume 
+							</ion-button>
+			    	</div>
+			    </div>
+			</div>
+
+		</div>
+	</div>
+	<!-- Profile page end -->
+	<!-- common footer show -->
+	<common-footer></common-footer>
+</ion-content>

@@ -1,0 +1,78 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+	<!-- common header show -->
+	<common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+	<!-- Result list page start -->
+	<div class="result-list-wrapper assessment subject result">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-xs-12 col-sm-8 offset-sm-2" *ngIf="!viewLoadData">
+					<div class="assessment-inner subject-list" >
+						<div class="row">
+							<div class="col-xs-12 col-sm-12">
+								<h2>Congratulations!</h2>
+								<p class="short-title">You achieved the following result.</p>
+								<!-- <div class="stamp">
+									<span class="given-marks">10</span>
+									<span class="full-marks">100</span>
+								</div> -->
+								<div class="result-stamp" >
+									<img src="assets/images/stamp.png">
+									<span class="given-marks">{{viewData?.score}}</span>
+									<span class="full-marks">{{viewData?.total}}</span>
+								</div>
+								<p>Thank you for participating</p>
+								<div class="custom-btn">
+									<ion-button [routerLink]="['/assessments', parms_action_id]" class="retry-again submit" size="default"
+										type="button" 
+											tooltip="Retry" flow="up">
+										<span class="submitText">Retry</span>
+									</ion-button>
+
+									<ion-button [routerLink]="['/assessments', 'result', parms_action_id]" class="submit" size="default"
+										type="button" 
+											tooltip="Goto test page" flow="up">
+										<span class="submitText">Goto test page</span>
+										<ion-icon name="arrow-round-forward"></ion-icon>
+									</ion-button>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- skeleton loading  start-->
+				<div class="col-xs-12 col-sm-8 offset-sm-2" *ngIf="viewLoadData">
+						<div class="assessment-inner subject-list skeleton" >
+							<div class="row">
+								<div class="col-xs-12 col-sm-12">
+									<h2>
+										<ion-skeleton-text animated style="width: 50%; text-align: center; margin: 0 auto;"></ion-skeleton-text>
+									</h2>
+									<p class="short-title">
+										<ion-skeleton-text animated style="width: 70%; margin: 0 auto;"></ion-skeleton-text>
+									</p>
+									<div class="result-stam">
+										<ion-skeleton-text animated style="width: 220px; height: 220px; border-radius: 50%; margin: 0 auto; "></ion-skeleton-text>
+									</div>
+									<p>
+										<ion-skeleton-text animated style="width: 30%; margin: 0 auto;"></ion-skeleton-text>
+									</p>
+									<div class="custom-btn">
+											<ion-skeleton-text animated style="width: 80px; height:35px; border-radius: 50px; margin: 0 auto;"></ion-skeleton-text>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+				<!-- skeleton loading  end-->
+
+			</div>
+		</div>
+	</div>
+	<!-- Result list page end -->
+
+	<!-- common footer show -->
+	<common-footer></common-footer>
+</ion-content>

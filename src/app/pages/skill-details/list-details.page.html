@@ -1,0 +1,296 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!--------- details section start ------- -->
+  <div class="detailsPage-wrapper">
+
+    <!-- subheader -->
+    <div class="detals-subheader" *ngIf="!viewLoadData">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="detals-subheader-inner">
+              <div class="title-tag">
+                <span *ngFor="let item of viewData?.category; let lastInd = last;">
+                  {{item?.name}}
+                  <i *ngIf="!lastInd">,</i>
+                </span> 
+              </div>
+              <h4>{{viewData?.name}}</h4>
+              <p>{{viewData?.short_description}}</p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="details-purches" *ngIf="viewData?.price && viewData?.price !=0">
+              <div class="price">
+                <span>&#8377;</span> {{viewData?.price}}
+              </div>
+              <div class="details-purches-button">
+                <div class="custom-btn">
+                  <ion-button size="default" [routerLink]="['/', 'checkout', viewData?.id]">
+                    <span class="submitText">Buy</span>
+                  </ion-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-page-inner">
+      <div class="container">
+        <div class="row">
+
+          <!-- skeleton loading  start-->
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" *ngIf="viewLoadData">
+            <div class="detailspage-image">
+              <ion-skeleton-text animated style="width: 100%; height: 150px;"></ion-skeleton-text>
+            </div>
+
+            <div class="detailsPage-content sub-header-details" >
+              <div class="sub-header-details">
+                <div class="header-item">
+                  <ul>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="detailsPage-content item" >
+              <h3 class="heading">
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" *ngIf="viewLoadData">
+              <div class="detailspage-right-item">
+                <h3>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </h3>
+                <ul>
+                  <li>
+                    <h5>
+                      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h5>
+                    <p>
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="detailspage-right-item">
+                <h3>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </h3>
+                <ul>
+                  <li>
+                    <h5>
+                      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h5>
+                    <p>
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              
+          </div>
+          <!-- skeleton loading  end-->
+
+          <!-- content -->
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+
+            <!-- details image -->
+            <div class="detailspage-image" *ngIf="viewData?.image">
+              <img src="{{file_url}}/{{viewData?.image}}" alt="banner" />
+            </div>
+
+            <div class="detailsPage-content sub-header-details" >
+              <div class="sub-header-details">
+                <div class="header-item">
+                  <ul>
+                    <li *ngIf="viewData?.company">
+                      <h5>Skilling Partner </h5> 
+                      <i>:</i>
+                      <p>{{viewData?.company}}</p>
+                    </li>
+                    <li *ngIf="viewData?.qualification">
+                      <h5>Education </h5> 
+                      <i>:</i>
+                      <p>{{viewData?.comma_separeted_qualification}}</p>
+                    </li>
+                    <li *ngIf="viewData?.duration">
+                      <h5>Duration </h5> 
+                      <i>:</i>
+                      <p>{{viewData?.duration}} day</p>
+                    </li>
+                    <li class="rating-details-item">
+                      <div class="rating-show not-clickable details-page" style="height: 15px; display: inline-block;"> 
+                        <!-- rating component call here -->
+                        <!-- item.intRating always need to number type not string -->
+                        <app-rating [rating]='viewData?.intRating' [itemId]='viewData?.id' (ratingClick)='ratingComponentClick($event)'></app-rating>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="detailsPage-content item" *ngIf="viewData?.description">
+              <h3 class="heading">Description</h3>
+              <p innerHTML="{{viewData?.description}}"></p>
+              <p style="font-size: 14px" *ngIf="viewData?.placement"><span style="font-weight: bold; ">Placement:</span> {{viewData?.placement}} </p>
+            </div>
+            
+            <div class="detailsPage-content item" *ngIf="viewData?.requirement">
+              <h3 class="heading">Requirement</h3>
+              <p innerHTML="{{viewData?.requirement}}"></p>
+            </div>
+              
+            <!-- <div class="detailsPage-content">
+              <h3 class="heading"><ion-skeleton-text animated style="width: 40%"></ion-skeleton-text></h3>
+              <p><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></p>
+              <p><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></p>
+            </div> -->
+
+          </div>
+
+          <!-- info -->
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+
+            <div class="detailspage-right-item">
+              <h3>Feature</h3>
+              <ul>
+                <li *ngFor="let item of viewData?.feature">
+                  <h5 (click)="openDescription($event, item, viewData?.feature)" [ngClass]="{'active':item.isOpenDescription}">
+                    {{item?.name}}
+                    <i *ngIf="!item.isOpenDescription" class="fa fa-angle-down" aria-hidden="true"></i>
+                    <i *ngIf="item.isOpenDescription" class="fa fa-angle-up" aria-hidden="true"></i>
+                  </h5>
+                  <p *ngIf="item.isOpenDescription">{{item?.description}}</p>
+                </li>
+                <li *ngIf="viewData?.feature && viewData?.feature.length == 0">
+                  <p class="no-rightside-data">No Feature Found</p>
+                </li>
+              </ul>
+            </div>
+
+            <div class="detailspage-right-item">
+              <h3>Module</h3>
+              <ul>
+                <li *ngFor="let item of viewData?.module">
+                    <h5 (click)="openDescription($event, item, viewData?.module)">
+                      {{item?.name}}
+                      <i *ngIf="!item.isOpenDescription" class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i *ngIf="item.isOpenDescription" class="fa fa-angle-up" aria-hidden="true"></i>
+                    </h5>
+                    <p *ngIf="item.isOpenDescription">{{item?.description}}</p>
+                </li>
+                <li *ngIf="viewData?.module && viewData?.module.length == 0">
+                  <p class="no-rightside-data">No Module Found</p>
+                </li>
+              </ul>
+            </div>
+            
+          </div>
+
+          <!-- related -->
+          <div class="col-xs-12 col-sm-12">
+            <div class="detailsPage-content list-right-content details-related">
+              <h3 *ngIf="viewData?.related">Related</h3>
+              <ngx-slick-carousel class="carousel" 
+              #slickModal="slick-carousel" 
+              [config]="relatedProductSlideConfig" 
+              >
+              <div ngxSlickItem *ngFor="let item of viewData?.related" class="slide">
+                <div class="list-item" [routerLink]="['/', 'skill-details', 'skill', item.id]"  > 
+                  <div class="image" [ngClass]="{'no-image': !item?.image}">
+                    <a href="javascript:void(0)">
+                      <!-- <img alt="logo" src="assets/images/1.jpg" alt=""> -->
+                      <img *ngIf="item?.image" class="img-scale employee-img profile" src="{{file_url}}/{{item?.image}}" />
+
+                      <img *ngIf="!item?.image" class="img-scale employee-img profile" src="assets/images/no-bg-img.jpg" /> 
+                      
+                    </a>
+                  </div>
+                  <div class="list-item-content">
+                    <h6 *ngIf="item?.category">
+                      <span class="cartegory-item" *ngFor="let category of item?.category; let i = index; let lastInd = last;">
+                        {{category?.name}}
+                        <i *ngIf="!lastInd">,</i>
+                      </span>
+                    </h6>
+                    <div class="list-item-content-inner">
+                      <h4 *ngIf="item?.name">{{item?.name}}</h4>
+                      <p *ngIf="item?.short_description">{{item?.short_description}}</p>
+                      <div class="price" *ngIf="item?.price != 0">
+                        <h4> <span class="rupis">&#8377;</span>  {{item?.price}}</h4>
+                      </div>
+                      <div class="custom-btn">
+                        <ion-button size="default">
+                          <span class="submitText" *ngIf="item?.price != 0">Buy</span>
+                          <span class="submitText" *ngIf="item?.price == 0">View</span>
+                        </ion-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </ngx-slick-carousel>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- details section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>
+

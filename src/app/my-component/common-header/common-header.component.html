@@ -1,0 +1,406 @@
+<ion-header>
+
+  <!-- menu top header -->
+  <div class="menu-top-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12">
+          <div class="top-header-inner">
+            <ion-buttons slot="start" [hidden]="!isMobile" >  
+            <ion-menu-button auto-hide="false" ></ion-menu-button>
+            <!-- <ion-icon (click)="toggleMenu()" name="menu" class="menu-buton-destop"></ion-icon> -->
+            <!-- 9876543210 -->
+            </ion-buttons>
+
+            <div class="top-header-inner-text " [ngClass]="{'login-sucess':get_user_dtls}">
+              <ul class="header-social mobile-hide wow bounceInLeft" data-wow-duration="1000ms" data-wow-delay="300ms" >
+                <li *ngFor="let item of site_info_data?.social">
+                  <a href="{{item?.link}}" target="_blank">
+                    <i class="fa fa-{{item?.icon}}" aria-hidden="true"></i>
+                  </a>
+                </li>
+              </ul>
+              <!-- <span class="contact-no mobile-hide"><a href="javascript:void(0);">9876543210</a></span> -->
+
+              <div class="menu-right-login" *ngIf="!get_user_dtls || get_user_dtls == ''" [ngClass]="{'not-login': !get_user_dtls || get_user_dtls == ''}">
+                <ul class="wow bounceInRight" data-wow-delay="0.15s" data-wow-duration="2s">
+                  <li (click)="userAuthenticateModal('signIn', '', '')">
+                    SIGN IN
+                  </li>
+                  <li (click)="userAuthenticateModal('signUp', '', '')">
+                    SIGN UP
+                  </li>
+                </ul>
+              </div>
+
+              <!-- get_user_dtls -->
+              <ion-buttons class="user-login-dropdown wow bounceInRight" data-wow-delay="0.15s" data-wow-duration="2s" slot="end" *ngIf="get_user_dtls || get_user_dtls != ''">
+                <div class="logout-dropdown">
+                  <button mat-button [matMenuTriggerFor]="menu1">
+                    <!-- <img class="img-scale" src="../../../assets/images/avatar.jpg" /> -->
+                    <span *ngIf="loadingShow" >
+                      <ion-spinner style="width: 100px; position: relative; top: 6px;" name="crescent" color="primary"></ion-spinner>
+                    </span>
+                    <span *ngIf="!loadingShow" >
+                      <img *ngIf="get_user_dtls?.profile" class="img-scale" src="{{file_url}}/{{get_user_dtls?.profile}}" />
+                      <img *ngIf="!get_user_dtls?.profile" class="img-scale" src="assets/images/noimage.jpg" />
+                      <!-- <span class="welcome-text">Welcome</span> -->
+                      <span class="username">{{get_user_dtls?.full_name}} {{get_user_dtls?.name}} </span>
+                    </span>
+                    <mat-icon class="rotate_90">play_arrow</mat-icon>
+                  </button>
+                  <mat-menu #menu1="matMenu" xPosition="before">
+                    <ion-row class="dropdown-menu-content" style="width: 240px;">
+                      <!-- <ion-col class="dropdown-menu-item ion-float-left width-33" role="button" tabindex="0">
+                        <div class="dropdown-item-inner pointer ion-text-center  full-width" (click)="changePasswordOpenModal('profile_update_modal', '', '');">
+                          <ion-icon class="width-100 ran-icon" name="person"></ion-icon>
+                          Profile 
+                        </div>
+                      </ion-col> -->
+                      <ion-col class="dropdown-menu-item ion-float-left width-33 ion-text-center" role="button" tabindex="0">
+                        <!-- <div class="dropdown-item-inner pointer ion-text-center" (click)="changePasswordOpenModal('profile_update_modal', get_user_dtls, '');"> -->
+                        <a class="dropdown-item-inner pointer ion-text-center dashboard-dropdown" href="./#dashboard">
+                          <ion-icon class="width-100 ran-icon" name="speedometer"></ion-icon>
+                          Dashboard 
+                        </a>
+                        
+                      </ion-col>
+                      <ion-col class="dropdown-menu-item ion-float-left width-33 ion-text-center" role="button" tabindex="0">
+                        <div class="dropdown-item-inner pointer ion-text-center full-width" (click)="changePasswordOpenModal('change_password_modal', get_user_dtls, '');">
+                          <ion-icon class="width-100 ran-icon" name="briefcase"></ion-icon> 
+                          Change password 
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="dropdown-menu-content">
+                        <ion-col class="dropdown-menu-lastitem" (click)="logOutUser()">
+                            <div class="dropdown-item-inner pointer ion-text-center" role="button" tabindex="0"><ion-icon class="width-100 ran-icon1" name="key"></ion-icon> Log Out </div>
+                        </ion-col>                
+                    </ion-row>
+                  </mat-menu>
+                </div>
+              </ion-buttons>
+
+              <!-- Search button -->
+              <ion-buttons class="mobile-right-menubutton search-menubutton" slot="end" [ngClass]="{'not-login': !get_user_dtls}">
+                <span class="menu-toggle-button"  (click)="openSearch()">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
+              </ion-buttons>
+
+              <!-- right menu button -->
+              <ion-buttons class="mobile-right-menubutton" slot="end" [ngClass]="{'not-login': !get_user_dtls}">
+                <span class="menu-toggle-button"  (click)="onSwipMenu(); handleOutsideClick($event);">
+                  <i class="fa fa-bars" aria-hidden="true"></i>
+                </span>
+              </ion-buttons>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- menu bottom header -->
+  <div class="menu-bottom-header" *ngIf="!isMobile">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12">
+          <div class="bottom-menu-inner">
+            <div class="logo wow bounceInLeft" data-wow-delay="0.15s" data-wow-duration="2s" (click)="goToPage('home', '')">
+              <!-- <img alt="logo" src="assets/images/logo.png" alt=""> -->
+              <img class="big-header-logo" src="{{file_url}}/{{site_info_data?.logo}}" alt="logo"/>
+              <img class="small-header-logo" src="{{file_url}}/{{site_info_data?.logo2}}" alt="logo"/>
+            </div>
+            <div class="menu">
+              <ul class="wow fadeInUp" data-wow-delay="0.15s" data-wow-duration="2s">
+                <!-- <li>HOME</li>
+                <li class="parent">
+                  <a href="javascript:void(0);">
+                    COURSES
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                  </a>
+                  <ul>
+                    <li><a href="javascript:void(0);">Submenu A</a></li>
+                      <li><a href="javascript:void(0);">Submenu B<i class="fa fa-angle-right fa-1"></i></a>
+                        <ul class="sub-hover">
+                          <li><a href="">Submenu 1</a></li>
+                          <li><a href="">Submenu 2</a></li>
+                          <li><a href="">Submenu 3</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                </li>
+                <li>ASSESSMENTS</li>
+                <li>ASSOCIATE WITH US</li>
+                <li>FAQ</li>
+                <li>CONTACT</li> -->
+
+                <li class="parent" *ngFor="let menu of main_menu">
+
+                  <!-- current_url_path_name -->
+                  <!-- menu?.module_name -->
+                  <!-- [ngClass]="{'active':menu?.addClass}" -->
+
+                    <a *ngIf="!menu?.pages" href="./#{{menu?.module_url}}" (click)="goToPage(menu?.module_url, menu)" routerLinkActive="active" routerDirection="backward"  [ngClass]="{'active':current_url_path_name == menu?.module_name}">{{menu?.module_display_name}}</a>
+                    <a href="javascript:void(0);" *ngIf="menu?.pages">
+                      {{menu?.module_display_name}}
+                      <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </a>
+                    <ul>
+                      <li *ngFor="let submenu of menu?.pages"><a href="./#{{submenu?.page_url}}" (click)="goToPage(submenu?.page_url, '')">{{submenu?.page_display_name}}</a></li>
+                      </ul>
+                  </li>
+              </ul>
+
+              <!-- <ion-button  routerLink="/skill-list">aaaaaaa</ion-button> -->
+              <!-- <ion-button class="font-size-11" tooltip="Add Category" flow="up" delay="500" [routerLink]="['/', 'skill-list']">
+                <ion-icon name="add"></ion-icon>
+              </ion-button> -->
+
+            </div>
+            
+            <!-- search -->
+            <!-- <div class="newsletter-subscribe search wow fadeInLeft" data-wow-delay="1.2s" data-wow-duration="2s">
+              <form  #searchForm="ngForm" (ngSubmit)="onSubmitSearch(searchForm)" >
+                <ion-input name="name" [(ngModel)]="searchModel" clearInput required></ion-input>
+                <div class="subscribtion-custom-btn">
+                  <ion-button size="default"
+                    type="submit" [disabled]="!searchForm.valid" 
+                      tooltip="Search" flow="up">
+                    <ion-spinner name="crescent"></ion-spinner> 
+                    <span class="submitText search-icon">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </span>
+                  </ion-button>
+                  </div>
+              </form>
+            </div> -->
+
+            <!-- Search Button -->
+            <span class="search-toggle-button wow bounceInRight" data-wow-delay="0.15s" data-wow-duration="2s" (click)="openSearch()">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </span>
+
+            <!-- right menu toggle button -->
+            <span class="menu-toggle-button wow bounceInRight" data-wow-delay="0.15s" data-wow-duration="2s"  (click)="onSwipMenu()">
+              <i class="fa fa-bars" aria-hidden="true"></i>
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- swip menu button -->
+  <!-- <button type="button" class="navbar-toggle swipe-control"></button> -->
+
+  <!--swipe menu-->
+  <div class="swipe-overlay" (click)="onSwipMenu();"></div>
+  <div class="swipe collapse" [ngClass]="{'loin-aswipe': get_user_dtls}">
+    <div class="swipe-menu">
+        <!-- <ul>
+        <li class="active">
+          <a href="javascript:void(0);">
+            Campus to Corporate
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);">
+            Continuous Skilling
+          </a>
+        </li>
+        <li class="parent">
+          <a href="javascript:void(0);">
+            Continuous Skilling
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </a>
+          <ul>
+            <li><a href="javascript:void(0);">Submenu A<i class="fa fa-angle-right fa-1"></i></a></li>
+              <li><a href="javascript:void(0);">Submenu B</a></li>
+            </ul>
+        </li>
+        <li>
+          <a href="javascript:void(0);">
+            Skill Development for Free
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);">
+            Higher Education
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);">
+            Subscribe for COEs
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);">
+            Subscription for Corporates
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);">
+            Assessment
+          </a>
+        </li><li>
+          <a href="javascript:void(0);">
+            Work Opportunities
+          </a>
+        </li>
+        <li class="mobileMenu-footer-contct desktop-hide">
+          <span class="contact-no">
+            <a href="javascript:void(0);">
+              <i class="fa fa-phone" aria-hidden="true"></i>
+              9876543210
+            </a>
+          </span>
+        </li>
+      </ul> -->
+      <ul>
+        <li *ngFor="let sidemenu of side_main_menu" >
+
+          <!-- current_url_path_name -->
+          <!-- sidemenu?.module_name -->
+          <!-- [ngClass]="{'active':sidemenu?.addClass}" -->
+
+          <a href="./#{{sidemenu?.module_url}}" [ngClass]="{'active':current_url_path_name == sidemenu?.module_name}" (click)="goToPage(sidemenu?.module_url, sidemenu)">
+            {{sidemenu?.module_display_name}}
+          </a>
+        </li>
+        <!-- <li class="mobileMenu-footer-contct desktop-hide">
+          <span class="contact-no">
+            <a href="javascript:void(0);">
+              <i class="fa fa-phone" aria-hidden="true"></i>
+              9876543210
+            </a>
+          </span>
+        </li> -->
+      </ul>
+    </div>	
+  </div>
+  <!--complete swipe menu-->
+
+  <!-- material side menu -->
+  <!-- <mat-sidenav-container>
+    <mat-sidenav #right position="start">
+       Start Sidenav.
+    </mat-sidenav>
+
+    <mat-sidenav #left position="end">
+       End Sidenav.
+    </mat-sidenav>
+
+    <div>
+        <button mat-button (click)="right.open()">right</button>
+        <button mat-button (click)="left.open()">left</button>
+    </div>
+  </mat-sidenav-container> -->
+
+  <div class="header-search banner">
+    <div class="banner-search">
+      <h4 class="slideInLeft">{{commonPageContent?.banner_top_search_title?.value}}</h4>
+      <form  #searchForm="ngForm" (ngSubmit)="onSubmitSearch(searchForm)" >
+        <div class="search-box bounceInLeft">
+          <!-- Skills -->
+          <!-- <div class="search-dropdown first"> -->
+            <!-- <ion-input name="skill" [(ngModel)]="model.skill" placeholder="Skills, Designation" clearInput></ion-input> -->
+            <!-- <input input-autocomplete [config]="autoCompliteConfig" [items]="autoCompliteItem" name="skill" [(ngModel)]="model.skill" placeholder="Skills, Designation" (inputChangedEvent)="autoCompliteSearch($event)" (selectEvent)="onSelectAutoSelect($event)"> -->
+          <!-- </div> -->
+          <!--Job Type -->
+          <!-- <div class="search-dropdown">
+            <ng-select  #careersNameSerch
+            [loading]="selectLoading"
+            [dropdownPosition]="'bottom'"
+            placeholder="Job Type"
+            [items]="homePageData?.search_bar?.job_type"
+            bindLabel="name"
+            name="job_type_id"
+            bindValue="id"
+            [searchable]="false"
+            [(ngModel)]="model.job_type_id"
+            >
+            <ng-template ng-header-tmp>
+                <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="careersNameSerch.filter($event.target.value)" [autofocus]="true" />
+            </ng-template>
+            </ng-select>
+          </div> -->
+          <!-- Degree -->
+          <div class="search-dropdown">
+            <ng-select #degreeSearch
+                [loading]="selectLoading"
+                [dropdownPosition]="'bottom'"
+                placeholder="Degree"
+                [items]="homePageData?.search_bar?.qual_degree_with_data"
+                bindLabel="name"
+                bindValue="id"
+                [searchable]="false"
+                name="degree_id" 
+                [(ngModel)]="model.degree_id"
+                (change)="onChangeDegree(model.degree_id, 'degree')"
+                >
+                <ng-template ng-header-tmp>
+                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="degreeSearch.filter($event.target.value)" [autofocus]="true" />
+                </ng-template>
+            </ng-select>
+          </div>
+
+          <!-- Area of Interest  -->
+          <div class="search-dropdown">
+            <ng-select #interestSearch
+                [loading]="selectLoadingDepend"
+                [dropdownPosition]="'bottom'"
+                placeholder="Area of Interest"
+                [items]="interestList"
+                bindLabel="name"
+                bindValue="id"
+                [searchable]="false"
+                name="interest_id" 
+                [(ngModel)]="model.interest_id" 
+                
+                >
+                <ng-template ng-header-tmp>
+                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="interestSearch.filter($event.target.value)" [autofocus]="true" />
+                </ng-template>
+            </ng-select>
+          </div>
+          <!-- location -->
+          <div class="search-dropdown">
+            <ng-select  #locationNameSerch
+            [loading]="selectLoading"
+            [dropdownPosition]="'bottom'"
+            placeholder="Location"
+            [items]="homePageData?.search_bar?.skill_city"
+            bindLabel="name"
+            name="location"
+            bindValue="id"
+            [searchable]="false"
+            [(ngModel)]="model.location"
+            [multiple]="true"
+            >
+            <ng-template ng-header-tmp>
+                <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="locationNameSerch.filter($event.target.value)" [autofocus]="true" />
+            </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="custom-btn search-job red-bg ">
+          <ion-button size="default"
+            type="submit" [disabled]="!model.degree_id && !model.interest_id && !model.location" 
+            tooltip="Surging Employability" flow="up">
+
+            <ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+            <span *ngIf="form_submit_text == 'Submitting'" class="submitText">{{form_submit_text}}</span>
+            
+            <span *ngIf="form_submit_text != 'Submitting'"  class="submitText">{{commonPageContent?.banner_top_search_button?.value}}</span>
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+</ion-header>

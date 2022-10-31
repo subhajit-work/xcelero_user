@@ -1,0 +1,300 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!-- ------ banner section start ----- -->
+  <div class="banner" [ngClass]="{'no-dots':homePageData?.banner_data?.main_banner.length == 1}">
+    <ngx-slick-carousel class="carousel" 
+    #slickModal="slick-carousel" 
+    [config]="slideConfig" 
+    (init)="slickInit($event)"
+    (breakpoint)="breakpoint($event)"
+    (afterChange)="afterChange($event)"
+    (beforeChange)="beforeChange($event)">
+
+    <!-- banner slider -->
+    <div ngxSlickItem *ngFor="let slide of homePageData?.banner_data?.main_banner" class="slide">
+      <img src="{{file_url}}/{{ slide?.image }}" alt="" width="100%">
+      <!-- banner content -->
+      <div class="banner-caption-wrapper">
+        <div class="container">
+          <div class="row">
+            <div class="banner-caption wow fadeInDown" data-wow-delay="5s" data-wow-duration="5s">
+              <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
+                <div class="banner-caption-inner wow fadeInDown" data-wow-delay="1s" data-wow-duration="1s">
+                  <h3 *ngIf="slide?.short_description" class="wow bounceInLeft" data-wow-delay="1s" data-wow-duration="2s">{{slide?.short_description}}</h3>
+                  <p *ngIf="slide?.description" class="wow fadeInLeft" data-wow-delay="1.1s" data-wow-duration="2s" innerHTML="{{slide?.description}}"></p>
+
+                  <div *ngIf="slide?.link1"  class="custom-btn banner-readmore">
+                    <ion-button size="default" type="button" [routerLink]="['/', slide?.link1 ]">
+                      <span class="submitText">Read More</span>
+                    </ion-button>
+                  </div>
+                </div>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </ngx-slick-carousel>
+  
+  <!-- <button (click)="addSlide()">Add</button>
+  <button (click)="removeSlide()">Remove</button>
+  <button (click)="slickModal.slickGoTo(2)">slickGoto 2</button>
+  <button (click)="slickModal.unslick()">unslick</button> -->
+  </div>
+  <!-- banner section end -->
+
+  <div class="section-backgrous-attatch">
+    <!--------- count-down section start ------- -->
+    <div class="home-nofification">
+        <div class="container">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                <ngx-slick-carousel class="carousel" 
+                #slickModal="slick-carousel" 
+                [config]="notificationConfig" 
+                (init)="slickInit($event)"
+                (breakpoint)="breakpoint($event)"
+                (afterChange)="afterChange($event)"
+                (beforeChange)="beforeChange($event)">
+
+                <!-- count-down slider -->
+                <div ngxSlickItem *ngFor="let item of homePageData?.notification; let i = index; let lastInd = last;"  class="slide">
+                
+                    <div class="count-item">
+                      <h4>
+                        <span class="notify-text" >
+                          {{item.date | date:'dd MMM yyy'}}
+                          <span *ngIf="item.date">,</span>
+                          {{item?.name}}
+                          <span *ngIf="item.location">at</span> 
+                          <span>
+                            {{item?.location}}
+                          </span>
+                          <a class="click-in-mobile" href="{{item.link}}" target="blank">
+                            Click Here
+                          </a>
+                        </span>
+                        
+                      </h4>
+
+                      <div class="custom-btn">
+                        <a href="{{item.link}}" target="blank">
+                          Click Here
+                        </a>
+                      </div>
+                    </div>
+                    
+                </div>
+                </ngx-slick-carousel>
+              </div>
+            </div>
+        </div>
+      </div>
+      <!-- count-down section end -->
+
+    <!--------- service section start ------- -->
+    <div class="services ">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="service-info" data-wow-delay="0.15s" data-wow-duration="2s">
+              <h3 class="" data-wow-delay="1s" data-wow-duration="2s">{{commonPageContent?.banner_bottom_title?.value}}</h3>
+              <p class="" data-wow-delay="1.2s" data-wow-duration="2s">{{commonPageContent?.banner_bottom_content?.value}}</p>
+              <div class="custom-btn  red-bg margin-top-20" data-wow-delay="1.2s" data-wow-duration="2s">
+                <ion-button size="default" type="button" (click)="openModalForm('get_in_touch', '', '')">
+                  <span class="submitText">{{commonPageContent?.banner_bottom_button_text?.value}} </span>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!-- service section end -->
+
+    <!--------- count-down section start ------- -->
+    <div class="count-down-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            
+              <ngx-slick-carousel class="carousel" 
+              #slickModal="slick-carousel" 
+              (init)="slickInit($event)"
+              [config]="countItemSlideConfig" 
+              >
+                <div ngxSlickItem class="slide" *ngFor="let item of homePageData?.fun_facts; let i = index; let lastInd = last;">
+                  <div class="count-item">
+                    <!-- <i class="fa fa-{{item?.short_description}}" aria-hidden="true"></i> -->
+                    <img src="{{file_url}}/{{item?.image}}">
+                    <h4>
+                      <span>{{item?.name}}</span>
+                    </h4>
+                    <p innerHTML="{{item?.description}}"></p>
+                  </div>
+                </div>
+              </ngx-slick-carousel>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- count-down section end -->
+
+    <!--------- product section start ------- -->
+    <div class="product-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <ul>
+              <li *ngFor="let item of homePageData?.fun_facts_bottom; let i = index; let lastInd = last; let oddItem=odd; let evenItem=even;">
+                <div class="product-item" [ngClass]="{'right-img':oddItem}">
+                  <div class="row" *ngIf="evenItem">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 product-item-inner">
+                      <img src="{{file_url}}/{{ item?.image }}" alt="" width="100%">
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6  product-item-under">
+                      <h4>{{ item?.name }}</h4>
+                      <p *ngIf="item?.short_description.length > 250; else not_read_text">
+                          <span *ngIf="!item.isReadmoreCollapsed">{{ item?.short_description  | slice:0:250 }} ... </span>
+                          <span *ngIf="item.isReadmoreCollapsed">{{ item?.short_description }} </span>
+                          <span *ngIf="!item.isReadmoreCollapsed" class="read-content more" (click)="readmoreCollapsed(item)">Read More</span>
+                          <span *ngIf="item.isReadmoreCollapsed" class="read-content less" (click)="readmoreCollapsed(item)">Read Less</span>
+                      </p>
+                      <ng-template #not_read_text>
+                        <p>{{ item?.short_description }}</p>
+                      </ng-template>
+                      <div class="custom-btn browse">
+                        <ion-button size="default" type="button" [routerLink]="['/', item?.link1 ]">
+                          <span class="submitText">{{commonPageContent?.banner_bottom_slider_button1_text?.value}}</span>
+                        </ion-button>
+
+                        <ion-button class="start" size="default" type="button" [routerLink]="['/', item?.link2 ]" >
+                          <span class="submitText">{{commonPageContent?.banner_bottom_slider_button2_text?.value}}</span>
+                        </ion-button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" [ngClass]="{'oddItem':oddItem}" *ngIf="oddItem">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 product-item-under">
+                      <h4>{{ item?.name }}</h4>
+                      <p *ngIf="item?.short_description.length > 250; else not_read_text2">
+                        <span *ngIf="!item.isReadmoreCollapsed">{{ item?.short_description  | slice:0:250 }} ... </span>
+                        <span *ngIf="item.isReadmoreCollapsed">{{ item?.short_description }} </span>
+                        <span *ngIf="!item.isReadmoreCollapsed" class="read-content more" (click)="readmoreCollapsed(item)">Read More</span>
+                        <span *ngIf="item.isReadmoreCollapsed" class="read-content less" (click)="readmoreCollapsed(item)">Read Less</span>
+                      </p>
+                      <ng-template #not_read_text2>
+                        <p>{{ item?.short_description }}</p>
+                      </ng-template>
+                      <div class="custom-btn browse">
+                        <ion-button size="default" type="button" [routerLink]="['/', item?.link1 ]">
+                          <span class="submitText">{{commonPageContent?.banner_bottom_slider_button1_text?.value}}</span>
+                        </ion-button>
+
+                        <ion-button class="start" size="default" type="button" [routerLink]="['/', item?.link2 ]" >
+                          <span class="submitText">{{commonPageContent?.banner_bottom_slider_button2_text?.value}}</span>
+                        </ion-button>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 product-item-inner">
+                      <img class="ion-float-right" src="{{file_url}}/{{ item?.image }}" alt="" width="100%">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- product section end -->
+
+    <!--------- categories section start ------- -->
+    <div class="categories-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            <div class="section-heading">
+              <h4>{{commonPageContent?.categories_slider_title?.value}}</h4>
+              <h6>{{commonPageContent?.categories_slider_content?.value}}</h6>
+            </div>
+            <ngx-slick-carousel class="carousel" 
+            #slickModal="slick-carousel" 
+            (init)="slickInit($event)"
+            [config]="productSlideConfig" 
+            >
+              <div ngxSlickItem *ngFor="let slide of homePageData?.interest_slider" class="slide" class="slide">
+                  <div class="categories-item" (click)="goToFilterPage('category', slide.id)" matRipple>
+                    <h4>{{slide?.name}}</h4>
+                      <img *ngIf="slide?.image" src="{{file_url}}/{{ slide?.image }}" alt="" width="100%"> 
+
+                      <img *ngIf="!slide?.image" class="img-scale employee-img profile" src="assets/images/no-bg-img.jpg" width="100%"/>
+                              
+                  </div>
+              </div>
+
+              </ngx-slick-carousel>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- categories section end -->
+
+    <!--------- note section start ------- -->
+    <div class="note-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            <div class="section-heading">
+              <h4>{{commonPageContent?.testimonial_title?.value}}</h4>
+              <h6>{{commonPageContent?.testimonial_content?.value}}</h6>
+            </div>
+            <div class="note-slider wow fadeInUp" data-wow-delay="0.15s" data-wow-duration="2s">
+              <ngx-slick-carousel class="carousel" 
+              #slickModal="slick-carousel" 
+              [config]="noteSlideConfig" 
+              (init)="slickInit($event)"
+              >
+
+              <!-- note slider -->
+              <div ngxSlickItem *ngFor="let slide of homePageData?.testimonial" class="slide">
+                <div class="note-item">
+                  <p innerHTML="{{slide?.description}}"></p>
+                  <h5>{{slide?.name}}</h5>
+                  <h6>{{slide?.short_description}}</h6>
+                </div>
+              </div>
+              </ngx-slick-carousel>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- note section end -->
+  </div>
+
+  <!-- jquary working demo
+  <h1 class="title" style="display:none">
+    {{title1}}
+  </h1>
+  <button (click)="toggleTitle()"> clickhere</button> -->
+
+  
+  <!-- <div class="desktop-container" *ngIf="!isMobile; else mobileContainer">
+    Destop
+  </div>
+  <ng-template #mobileContainer>
+    Mobile
+  </ng-template> -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>
+

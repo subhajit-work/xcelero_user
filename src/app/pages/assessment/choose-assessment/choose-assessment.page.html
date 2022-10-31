@@ -1,0 +1,308 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!--------- details section start ------- -->
+  <div class="student-register-wrapper associate-us-wrapper profile-wrapper assessment only-select-assesment">
+
+    <div class="container">
+      <div class="row">
+
+        <!-- <div class="col-xs-12 col-sm-6 offset-sm-3"> -->
+        <div class="col-xs-12 col-sm-6 col-md-7 col-lg-8 ">
+          
+          <div class="student-register-inner" *ngIf="!getlistLoading">
+            <h6>Choose Assessment</h6>
+            <div class="assessment-inner" >
+              <h4> {{getlistData?.choose_assessment?.short_description}} </h4>
+              <p [innerHTML]="getlistData?.choose_assessment?.description"></p>
+              
+              <div class="choose-assessment-form">
+
+                <div class="row">
+                  <!-- Education -->
+                  <!-- <div class="col-xs-12 col-sm-12">
+                    <ion-label position="floating"> Education <sup>*</sup> </ion-label>
+                    <ng-select #QualificationSerch
+                        [loading]="selectLoading"
+                        [dropdownPosition]="'bottom'"
+                        placeholder="Please Select Education"
+                        [items]="getlistData?.qualification_having_questions"
+                        bindLabel="name"
+                        name="qualification"
+                        bindValue="id"
+                        [searchable]="false"
+                        [(ngModel)]="model.qualification"
+                        (change)="onChangeSelectBox('qualification', model.qualification, model.industry_type_id)"
+                        >
+                        <ng-template ng-header-tmp>
+                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="QualificationSerch.filter($event.target.value)" [autofocus]="true" />
+                        </ng-template>
+                    </ng-select>
+                  </div> -->
+
+                  <!-- industry_type -->
+                  <!-- <div class="col-xs-12 col-sm-12">
+                    <div>
+                        <ion-label position="floating">Area of Interest <sup>*</sup> </ion-label>
+                        <ng-select  #industryNameSerch
+                        [loading]="viewLoadDataDropdown"
+                        [dropdownPosition]="'bottom'"
+                        placeholder="Select Education first"
+                        [items]="selectData"
+                        bindLabel="name"
+                        name="industry_type_id"
+                        bindValue="id"
+                        [searchable]="false"
+                        [(ngModel)]="model.industry_type_id"
+                        (change)="onChangeSelectBox('industry', model.qualification, model.industry_type_id)"
+                        >
+                        <ng-template ng-header-tmp>
+                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="industryNameSerch.filter($event.target.value)" [autofocus]="true" />
+                        </ng-template>
+                        </ng-select>
+                    </div>
+                  </div> -->
+
+                  <!-- Qualification -->
+                  <div class="col-xs-12 col-sm-12">
+                    <ion-label position="floating"> Education <sup>*</sup> </ion-label>
+                    <ng-select  #qualificationNameSerch
+                      [loading]="selectLoading"
+                      [dropdownPosition]="'bottom'"
+                      placeholder="select Education"
+                      [items]="qualificationList"
+                      bindLabel="name"
+                      name="qualification_with_data"
+                      bindValue="id"
+                      [searchable]="false"
+                      [(ngModel)]="model.qualification_with_data"
+                      (change)="onChangeStudy(model.qualification_with_data,'qualification')"
+                      >
+                      <ng-template ng-header-tmp>
+                          <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="qualificationNameSerch.filter($event.target.value)" [autofocus]="true" />
+                      </ng-template>
+                    </ng-select>
+                  </div>
+
+                  <!-- Degree -->
+                  <div class="col-xs-12 col-sm-12">
+                    <ion-label position="floating"> Degree </ion-label>
+                    <ng-select #degreeSearch
+                        [loading]="selectLoadingDepend"
+                        [dropdownPosition]="'bottom'"
+                        placeholder="select Degree"
+                        [items]="degreeList"
+                        bindLabel="name"
+                        bindValue="id"
+                        [searchable]="false"
+                        name="qual_degree_with_data" 
+                        [(ngModel)]="model.qual_degree_with_data"
+                        (change)="onChangeStudy(model.qual_degree_with_data, 'degree')"
+                        >
+                        <ng-template ng-header-tmp>
+                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="degreeSearch.filter($event.target.value)" [autofocus]="true" />
+                        </ng-template>
+                    </ng-select>
+                  </div>
+
+                  <!-- Area of Interest  -->
+                  <div class="col-xs-12 col-sm-12">
+                    <ion-label position="floating"> Area of Interest </ion-label>
+                    <ng-select #interestSearch
+                        [loading]="selectLoadingDepend"
+                        [dropdownPosition]="'bottom'"
+                        placeholder="Select Area of Interest"
+                        [items]="interestList"
+                        bindLabel="name"
+                        bindValue="id"
+                        [searchable]="false"
+                        name="qual_interest_with_data" 
+                        [(ngModel)]="model.qual_interest_with_data" 
+                        (change)="onChangeStudy(model.qual_interest_with_data, 'interest')"
+                        >
+                        <ng-template ng-header-tmp>
+                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="interestSearch.filter($event.target.value)" [autofocus]="true" />
+                        </ng-template>
+                    </ng-select>
+                  </div>
+
+                  <!-- Subject -->
+                  <div class="col-xs-12 col-sm-12">
+                    <ion-label position="floating"> Subject <sup>*</sup> </ion-label>
+                    <ng-select #subjectSearch
+                        [loading]="selectLoading"
+                        [dropdownPosition]="'bottom'"
+                        placeholder="Select Subject"
+                        [items]="subjectList"
+                        bindLabel="name"
+                        bindValue="id"
+                        [searchable]="false"
+                        name="qual_subject_with_data" 
+                        [(ngModel)]="model.qual_subject_with_data " 
+                        (change)="onChangeStudy(model.qual_subject_with_data, 'subject')"
+                        >
+                        <ng-template ng-header-tmp>
+                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="subjectSearch.filter($event.target.value)" [autofocus]="true" />
+                        </ng-template>
+                    </ng-select>
+                  </div>
+
+
+                </div>
+
+                <!-- next button -->
+                <div class="col-xs-12 col-sm-12">
+                  <!-- <ion-button class="next-button" size="default" shape="round" [routerLink]="['/', 'assessment-subject', model.qualification, model.industry_type_id]" [disabled]="nextButtonDisable"> -->
+                  <!-- <ion-button class="next-button" size="default" (click)="onclickNext($event, model)" [disabled]="nextButtonDisable">
+                  
+                    Next
+                  </ion-button> -->
+
+                  <div class="custom-btn">
+                    <ion-button class="next-button" size="default" (click)="onclickNext($event, model)" [disabled]="nextButtonDisable" style="margin-top: 4px;">
+                      <span class="submitText">Next</span>
+                    </ion-button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- skeleton loading  start-->
+          <div class="student-register-inner" style="border: 1px solid var(--ion-color-gray);" *ngIf="getlistLoading">
+            <h6 style="background: var(--ion-color-gray);">
+              <ion-skeleton-text animated style="width: 30%; "></ion-skeleton-text>
+            </h6>
+            <div class="assessment-inner" >
+                <h4> 
+                  <ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text>
+                </h4>
+                <p>
+                  <ion-skeleton-text animated style="width: 70%; "></ion-skeleton-text>
+                </p>
+                <p>
+                  <ion-skeleton-text animated style="width: 70%; "></ion-skeleton-text>
+                </p>
+                
+                <div class="choose-assessment-form">
+    
+                  <div class="row">
+                    <!-- Education -->
+                    <div class="col-xs-12 col-sm-12">
+                      <ion-skeleton-text animated style="width: 80%; "></ion-skeleton-text>
+                    </div>
+    
+                    <!-- industry_type -->
+                    <div class="col-xs-12 col-sm-12">
+                      <ion-skeleton-text animated style="width: 80%; "></ion-skeleton-text>
+                    </div>
+                  </div>
+    
+                  <!-- next button -->
+                  <div class="col-xs-12 col-sm-12" style="text-align: center;">
+                    <ion-skeleton-text animated style="width: 10%; display: inline-block; margin-top: 10px; "></ion-skeleton-text>
+                  </div>
+    
+                </div>
+            </div>
+          </div>
+          <!-- skeleton loading  end-->
+
+        </div>
+
+        <!-- info -->
+				<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4" *ngIf="!getlistLoading">
+
+          <!-- Latest skill -->
+          <div class="detailspage-right-item recommended-skill">
+            <h3>Latest Skill</h3>
+            <div class="job-list-inner">
+              <ul>
+                <li *ngFor="let item of commonPageData?.latest_skill; let i = index;">
+                  <div class="list-item" [routerLink]="['/', 'skill-details', 'skill', item.id]" > 
+                    <div class="image">
+                      <a href="javascript:void(0)">
+                        <img *ngIf="item?.image" src="{{file_url}}/{{item?.image}}" /> 
+                        <img *ngIf="!item?.image" src="assets/images/no-bg-img.jpg" /> 
+                      </a>
+                    </div>
+                    <div class="list-item-content">
+                      <div class="list-item-content-inner">
+                        <h4 class="title">{{item?.name}} </h4>
+                        <p>{{item?.short_description}}</p>
+                        <div class="price" *ngIf="item?.price != 0">
+                          <h4> <span class="rupis">&#8377;</span> {{item?.price}}</h4>
+                        </div>
+                        <div class="custom-btn">
+                          <ion-button size="default">
+                            <span class="submitText" *ngIf="item?.price != 0">Buy</span>
+                            <span class="submitText" *ngIf="item?.price == 0">View</span>
+                          </ion-button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li *ngIf="commonPageData?.latest_skill && commonPageData?.latest_skill.length == 0">
+                  <p class="no-rightside-data"> No Skill Found</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+					<!-- Latest job -->
+					<div class="detailspage-right-item ">
+						<h3>Latest Job</h3>
+						<div class="job-list-inner">
+							<ul>
+								<li *ngFor="let item of commonPageData?.latest_job; let i = index;">
+									<div class="job-item"  >
+										<div class="company-logo">
+											<img *ngIf="item?.company_logo" src="{{file_url}}/{{item?.company_logo}}" /> 
+											<img *ngIf="!item?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+										</div>
+										<div class="job-content">
+											<h5>{{item?.name}}</h5>
+											<p>
+												<span *ngIf="item?.industry_type">
+													{{item?.industry_type}}
+												</span>
+												<span *ngIf="item?.job_type">
+													{{item?.job_type}}
+												</span>
+												<span *ngIf="item?.comma_separeted_qualification">
+													{{item?.comma_separeted_qualification}}
+												</span>
+												<span *ngIf="item?.city">
+													{{item?.city}}
+												</span>
+											</p>
+										</div>
+										<div class="view-job-button">
+											<ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]">
+												<span class="submitText">View</span>
+											</ion-button>
+										</div>
+									</div>
+								</li>
+								<li *ngIf="commonPageData?.latest_job && commonPageData?.latest_job.length == 0">
+									<p class="no-rightside-data">No Job Found</p>
+								</li>
+							</ul>
+						</div>
+					</div>
+					
+        </div>
+        
+      </div>
+    </div>
+
+  </div>
+  <!-- details section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>

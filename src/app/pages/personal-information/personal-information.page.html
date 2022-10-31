@@ -1,0 +1,185 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+    <!-- common header show -->
+    <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+    
+	<!-- Personal Information page start -->
+	<div class="personal-info-wrapper">
+		<div class="container">
+			<div class="common-box">
+				<div class="row">
+					<!-- Course Heading -->
+					<div class="col-lg-12">
+						<h6 class="checkout_complt_head">Personal Information</h6>
+					</div>
+				</div>
+
+				<div class="ion-padding form-col">
+                    <form  #personalInfoAddForm="ngForm" (ngSubmit)="onSubmit(personalInfoAddForm)" >
+                        <div class="row">
+
+                            <!-- hidden product id -->
+                            <input type="hidden" name="skill_id" [(ngModel)]="parms_action_id">
+                            <input type="hidden" name="site_api" [(ngModel)]="main_url">
+
+                            <!-- First Name -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">First Name <sup>*</sup> </ion-label>
+                                    <ion-input name="fname" [(ngModel)]="model.fname" clearInput required></ion-input>
+                                </div>
+                            </div>
+                            <!-- Last Name -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Last Name <sup>*</sup> </ion-label>
+                                    <ion-input name="lname" [(ngModel)]="model.lname" clearInput required></ion-input>
+                                </div>
+                            </div>
+                            <!-- Mobile -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Mobile<sup>*</sup> </ion-label>
+                                    <ion-input OnlyNumber="true" type="tel" minlength="10"maxlength="10" name="mobile" [(ngModel)]="model.mobile" clearInput required></ion-input>
+                                </div>
+                            </div>
+                            <!-- Email -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Email<sup>*</sup> </ion-label>
+                                    <ion-input type="email" name="email" [(ngModel)]="model.email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" clearInput email required></ion-input>
+                                </div>
+                            </div>
+
+                            <!-- Country -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Country<sup>*</sup></ion-label>
+                                    <ng-select #countryAddressSerch
+                                        [loading]="selectLoading"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select Country"
+                                        [items]="countryList?.list"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        (change)="onChangeLocation(model.country_id, 'state', model)"
+                                        [searchable]="false"
+                                        name="country_id" 
+                                        [(ngModel)]="model.country_id"
+                                        required
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="countryAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <!-- State -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">State<sup>*</sup></ion-label>
+                                    <ng-select #stateAddressSerch
+                                        [loading]="selectLoadingDepend"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select State"
+                                        [items]="stateList"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        (change)="onChangeLocation(model.state_id, 'city', model)"
+                                        [searchable]="false"
+                                        name="state_id" 
+                                        [(ngModel)]="model.state_id" 
+                                        required
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="stateAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <!-- City -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">City<sup>*</sup></ion-label>
+                                    <ng-select #cityAddressSerch
+                                        [loading]="selectLoading"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select City"
+                                        [items]="cityList"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        (change)="onChange(model.city_id)"
+                                        [searchable]="false"
+                                        name="city_id" 
+                                        [(ngModel)]="model.city_id" 
+                                        required
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="cityAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <!-- Preferred Time  -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Preferred Time </ion-label>
+                                    <!-- <ion-input name="time_preffer" [(ngModel)]="model.time_preffer" clearInput required></ion-input> -->
+                                    <li-ionic-timepicker 
+                                    name="time_preffer" 
+                                    [(ngModel)]="model.time_preffer"
+                                    [inputTimeConfig]="timePickerObj" 
+                                    (ngModelChange)="onChangeDateTime(model.time_preffer)"
+                                    
+                                    >
+                                    <!-- [ngModelOptions]="{standalone: true}" -->
+                                    </li-ionic-timepicker>
+                                </div>
+                            </div>
+
+                            <!-- query -->
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="form-item">
+                                    <ion-label position="floating">Query</ion-label>
+                                    <ion-textarea auto-grow="true" name="query" [(ngModel)]="model.query" clearInput></ion-textarea>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row ">
+                            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 ion-padding-top tramsconditionCheck">
+                                <!-- <ion-checkbox color="primary" required></ion-checkbox> -->
+                                <label>
+                                    <input type="checkbox" name="acceptTerms" id="acceptTerms" class="form-check-input" [(ngModel)]="model.acceptTerms" #acceptTerms="ngModel" required>
+
+                                    <span class="ion-padding-start">I’ve read and accept the <a class="terms-condtion-text" href="./#/cms/terms-and-conditions" target="_blank">Terms & Conditions</a></span>
+                                </label>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ion-padding-top">
+                                <div class="custom-btn">
+                                    <ion-button class="submit ion-float-right" size="default"
+                                    type="submit" [disabled]="!personalInfoAddForm.valid" 
+                                    tooltip="Submit" flow="up">
+                                        <ion-spinner *ngIf="form_submit_text == 'Submitting'" name="crescent"></ion-spinner> 
+                                        <span class="submitText">{{form_submit_text}}</span>
+                                    </ion-button>	
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+				</div>
+
+			</div>
+				
+			
+		</div>
+	</div>
+	<!-- Personal Information page end -->
+
+
+	<!-- common footer show -->
+	<common-footer></common-footer>
+</ion-content>

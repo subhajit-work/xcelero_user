@@ -1,0 +1,93 @@
+<ion-content  [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+	<!-- common header show -->
+	<common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!--------- details section start ------- -->
+  <div class="profile-wrapper assessment subject campus-to-company">
+
+    <div class="container" *ngIf="!viewLoadData">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12">
+          <div class="assessment-inner subject-list" >
+            <h4> {{viewData?.data?.short_description}} </h4>
+            <p [innerHTML]="viewData?.data?.description"></p>
+            
+            <div class="row" style="margin-top: 30px;">
+              <!-- <div class="col-xs-12 col-sm-3" *ngFor="let item of viewData?.boxes; let i =index;">
+                <div class="assessment-inner sublect-inner" matRipple [routerLink]="['/', item?.link]" (click)="clickItemHighlight(i + 1)" [ngClass]="{'hilight_activated': (activeHighlightIndex == i+1)}">
+                  <div class="campus-company-item">
+					  <div class="campus-compus-icon">
+						<i class="fa fa-address-book" aria-hidden="true"></i>
+					  </div>
+                      <h6>{{item?.name}}</h6>
+                  </div>
+                </div>
+			  </div> -->
+			  	<div class="col-xs-12 col-sm-12">
+					<div class="campus-company-inner">
+						<ul>
+							<li *ngFor="let item of viewData?.boxes; let i =index;">
+								<div class="assessment-inner sublect-inner" matRipple [routerLink]="['/', item?.link]" (click)="clickItemHighlight(i + 1)" [ngClass]="{'hilight_activated': (activeHighlightIndex == i+1)}"
+								>
+									<div class="campus-company-item">
+										<div class="campus-compus-icon">
+											<i [ngStyle]="{'color':item?.color ? item?.color : 'blue' }" class="fa fa-{{item?.icon}}" aria-hidden="true"></i>
+										</div>
+										<h6 >{{item?.name}}</h6>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-12">
+					<div *ngIf="subjectList && subjectList.length == 0 && !viewLoadData" class="assessment-inner sublect-inner no-data-found subject">
+					No Data Found
+					</div>
+				</div>
+			</div>
+			
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<!-- skeleton loading  start-->
+    <div class="container" *ngIf="viewLoadData">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12">
+          <div class="assessment-inner subject-list" >
+            <h4>
+              <ion-skeleton-text animated style="width: 60%; "></ion-skeleton-text>
+            </h4>
+            <p>
+                <ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text><ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text><ion-skeleton-text animated style="width: 90%; "></ion-skeleton-text>
+            </p>
+            <div class="row" style="margin-top: 30px;">
+				<div class="col-xs-12 col-sm-3" *ngFor="let item of skeletonArray">
+					<div class="assessment-inner sublect-inner" matRipple>
+						<div class="campus-company-item">
+							<div class="campus-compus-icon">
+								<ion-skeleton-text animated style="width: 20%; height: 50px; display:inline-block; "></ion-skeleton-text>
+							</div>
+							<h6 style="width:50%;">
+								<ion-skeleton-text animated style="width: 100%; "></ion-skeleton-text>
+							</h6>
+						</div>
+					</div>
+				</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- skeleton loading  end-->
+
+  </div>
+  <!-- details section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>

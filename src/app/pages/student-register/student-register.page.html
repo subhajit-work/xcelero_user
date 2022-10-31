@@ -1,0 +1,529 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+    <!-- common header show -->
+    <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+    
+	<!-- Student Register page start -->
+	<div class="student-register-wrapper only-register">
+		<div class="container">
+			<div class="row">
+                
+                <!-- Register Form -->
+                <div class="col-xs-12 col-sm-12 ion-no-padding student-register-inner form-col" [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+
+                    <!-- dots loading -->
+                    <div class="form-data-loading" [ngClass]="{'show-loading': editLoading}">
+                        <ion-spinner name="dots"></ion-spinner>
+                    </div>
+
+                    <form  #studentsAddForm="ngForm" (ngSubmit)="onSubmit(studentsAddForm)" >
+                        <h6>Student Registration Form</h6>
+
+                        <input type="hidden" name="user_id" [(ngModel)]="model.user_id">
+                        <input type="hidden" name="status" [(ngModel)]="user_status">
+                        
+                        <!-- primary fieeld -->
+                        <div class="row ion-padding">
+
+                            <!-- First Name -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">First Name <sup>*</sup> </ion-label>
+                                    <ion-input name="fname" [(ngModel)]="model.fname" clearInput required></ion-input>
+                                </div>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Last Name <sup>*</sup> </ion-label>
+                                    <ion-input name="lname" [(ngModel)]="model.lname" clearInput required></ion-input>
+                                </div>
+                            </div>
+
+                            <!-- Mobile -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Mobile<sup>*</sup> </ion-label>
+                                    <ion-input OnlyNumber="true" type="tel" minlength="10"maxlength="10" name="mobile" [(ngModel)]="model.mobile" clearInput required></ion-input>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Email<sup>*</sup> </ion-label>
+                                    <ion-input type="email" name="email" [(ngModel)]="model.email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" clearInput email required></ion-input>
+
+                                    <!-- hidden password field -->
+                                    <input type="hidden" name="password" [(ngModel)]="model.password" >
+                                </div>
+                            </div>
+
+                            <!-- Password -->
+                            <!-- <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Password <sup>*</sup> </ion-label>
+                                    <div>
+                                        <ion-input type="hidden" name="password" [(ngModel)]="model.password" clearInput required>
+                                        </ion-input>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <!-- Gender -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Gender </ion-label>
+                                    <ion-list>
+                                        <div class="radio-item" *ngFor="let item of genderArry; let i = index;">
+                                            <!-- gender >>  {{item.gender}} -->
+                                            <input type="radio" id="ritema{{i}}" [value]="item?.value" name="gender" [(ngModel)]="item.gender" (ngModelChange)="radioButtonChange(item.gender)">
+                                            <label for="ritema{{i}}">{{item?.name}}</label>
+                                        </div>
+                                    </ion-list>
+                                </div>
+                            </div>
+
+                            <!-- Date of birth -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">D.O.B </ion-label>
+                                    <li-ionic4-datepicker 
+                                        name="dob" 
+                                        [(ngModel)]="model.dob"
+                                        [inputDateConfig]="datePickerObj" 
+                                    ></li-ionic4-datepicker>
+                                    <!-- (ngModelChange)="onDateChangeDate('dob', model.dob)" -->
+                                </div>
+                            </div>
+
+                            <!-- Pin -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Pin </ion-label>
+                                    <ion-input OnlyNumber="true" type="tel" minlength="6"maxlength="6" name="pin" [(ngModel)]="model.pin" clearInput></ion-input>
+                                </div>
+                            </div>
+                            
+                            <!-- Country -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">Country</ion-label>
+                                    <ng-select #countryAddressSerch
+                                        [loading]="selectLoading"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select Country"
+                                        [items]="countryList?.list"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        (change)="onChangeLocation(model.country_id, 'state', model)"
+                                        [searchable]="false"
+                                        name="country_id" 
+                                        [(ngModel)]="model.country_id"
+                                        
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="countryAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <!-- State -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">State</ion-label>
+                                    <ng-select #stateAddressSerch
+                                        [loading]="selectLoadingDepend"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select State"
+                                        [items]="stateList"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        (change)="onChangeLocation(model.state_id, 'city', model)"
+                                        [searchable]="false"
+                                        name="state_id" 
+                                        [(ngModel)]="model.state_id" 
+                                        
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="stateAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <!-- City -->
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                <div class="form-item">
+                                    <ion-label position="floating">City</ion-label>
+                                    <ng-select #cityAddressSerch
+                                        [loading]="selectLoading"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select City"
+                                        [items]="cityList"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        (change)="onChange(model.city_id)"
+                                        [searchable]="false"
+                                        name="city_id" 
+                                        [(ngModel)]="model.city_id" 
+                                        
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="cityAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <!-- Profile Picture -->
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                                <div class="file_upload form-item">
+                                    <ion-label position="floating">Profile Picture</ion-label>
+                                    <div class="normal-file-uploading">
+                                        <span class="upload-file profile-upload">
+                                            Upload Picture
+                                            <input [(ngModel)]="model.image2" type="file" (change)="normalFileUpload($event, model.image2, 'image')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="image/*">
+                                        </span>
+                                        <!-- accept=".pdf,.jpg,.doc,.docx" -->
+
+                                        <!-- <span [hidden]="!uploadImagePathShow" class="file-name">{{model.image2}}</span> -->
+                                        <img [hidden]="!uploadImagePathShow " class="form-upload-image" src="{{imgaePreview}}" alt="image" />
+
+                                        <img *ngIf="model.image && !uploadImagePathShow" class="form-upload-image" src="{{file_url}}/{{model.image}}" alt="image" />
+
+                                        <span class="image-clear img" (click)="fileCross(model.image2, 'image')" [hidden]="!model.image && !model.image2">
+                                            <ion-icon name="close"></ion-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Address Line 1 -->
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-item">
+                                    <ion-label position="floating">Address Line 1</ion-label>
+                                    <ion-textarea auto-grow="true" name="address_1" [(ngModel)]="model.address_1" clearInput></ion-textarea>
+                                </div>
+                            </div>
+
+                            <!-- Address Line 2 -->
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="form-item">
+                                    <ion-label position="floating">Address Line 2</ion-label>
+                                    <ion-textarea auto-grow="true" name="address_2" [(ngModel)]="model.address_2" clearInput></ion-textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Qualification qualificatiuon-->
+                        <ion-card>
+                            <div *ngFor="let item of model.qualification; let i = index;  let first = first; let last = last;  let odd = odd" [ngClass]="{ 'odd-pdc-row': odd}">
+                                <ion-card-header [ngClass]="{'sub-more-header': !first}">
+                                    Education <span [hidden]="first">{{i}}</span>
+                                    <!-- Add Button -->
+                                    <ion-button class="add-btn ion-float-right" color="warning" size="small" (click)="addItem(model.qualification, item)" *ngIf="first || last">
+                                        <ion-icon ios="ios-add" md="md-add"></ion-icon>
+                                    </ion-button>
+                                    <!-- Minus Button -->
+                                    <ion-button  class="minus-btn ion-float-right" color="danger" size="small" (click)="removeItem(i, $event, model.qualification, '', '');" [hidden]="first">
+                                        <ion-icon ios="ios-remove" md="md-remove"></ion-icon>
+                                    </ion-button>
+                                </ion-card-header>
+
+                                <div class="row">
+                                    <!-- Name -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Name {{item.qualification_id}}</ion-label>
+
+                                            <ng-select #qualificationSerch
+                                                [loading]="selectLoading"
+                                                [dropdownPosition]="'bottom'"
+                                                placeholder="Please Select Education"
+                                                [items]="qualificationList"
+                                                bindLabel="name"
+                                                bindValue="id"
+                                                (change)="onChangeStudy(item.qualification_id, 'degree', item)"
+                                                [searchable]="false"
+                                                name="qualification[{{i}}][qualification_id]"
+                                                [(ngModel)]="item.qualification_id"
+                                                appendTo="body"
+                                                >
+                                                <ng-template ng-header-tmp>
+                                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="qualificationSerch.filter($event.target.value)" [autofocus]="true" />
+                                                </ng-template>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Degree -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Degree</ion-label>
+
+                                            <ng-select #degreeSerch
+                                                [loading]="selectLoadingDepend"
+                                                [dropdownPosition]="'bottom'"
+                                                placeholder="Please select Education First"
+                                                [items]="item.degreeList"
+                                                bindLabel="name"
+                                                bindValue="id"
+                                                (change)="onChange(item.degree_id)"
+                                                [searchable]="false"
+                                                name="qualification[{{i}}][degree_id]" 
+                                                [(ngModel)]="item.degree_id"
+                                                appendTo="body"
+                                                >
+                                                <ng-template ng-header-tmp>
+                                                    <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="degreeSerch.filter($event.target.value)" [autofocus]="true" />
+                                                </ng-template>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Board -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Board</ion-label>
+                                            <ion-input name="qualification[{{i}}][board]" [(ngModel)]="item.board" clearInput ></ion-input>
+                                        </div>
+                                    </div>
+
+                                    <!-- Passout Year -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Passout Year</ion-label>
+                                            <ion-input OnlyNumber="true" type="tel" minlength="4"maxlength="4" name="qualification[{{i}}][passout_year]" [(ngModel)]="item.passout_year" clearInput ></ion-input>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Marks -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Marks</ion-label>
+                                            <ion-input name="qualification[{{i}}][marks]" [(ngModel)]="item.marks" clearInput ></ion-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ion-card>
+
+                        <!-- Certification -->
+                        <ion-card>
+                            <div *ngFor="let item of model.certification; let i = index;  let first = first; let last = last;  let odd = odd" [ngClass]="{ 'odd-pdc-row': odd}">
+                                <ion-card-header [ngClass]="{'sub-more-header': !first}">
+                                    Certification <span [hidden]="first">{{i}}</span>
+                                    <!-- Add Button -->
+                                    <ion-button class="add-btn ion-float-right" color="warning" size="small" (click)="addItem(model.certification, item)" *ngIf="first || last">
+                                        <ion-icon ios="ios-add" md="md-add"></ion-icon>
+                                    </ion-button>
+                                    <!-- Minus Button -->
+                                    <ion-button  class="minus-btn ion-float-right" color="danger" size="small" (click)="removeItem(i, $event, model.certification, '', '');" [hidden]="first">
+                                        <ion-icon ios="ios-remove" md="md-remove"></ion-icon>
+                                    </ion-button>
+                                </ion-card-header>
+
+                                <div class="row">
+                                    <!-- Name -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Name</ion-label>
+                                            <ion-input name="certification[{{i}}][name]" [(ngModel)]="item.name" clearInput ></ion-input>
+                                        </div>
+                                    </div>
+
+                                    <!-- Start Date -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Start Date</ion-label>
+                                            <li-ionic4-datepicker 
+                                                name="certification[{{i}}][start_date]" 
+                                                [(ngModel)]="item.start_date"
+                                                [inputDateConfig]="startdatePickerObj" 
+                                                (ngModelChange)="onDateChangeDate('certification_start_date', item, item.start_date)"
+                                                
+                                            ></li-ionic4-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <!-- End Date -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">End Date</ion-label>
+                                            <li-ionic4-datepicker 
+                                                name="certification[{{i}}][end_date]" 
+                                                [(ngModel)]="item.end_date"
+                                                [inputDateConfig]="certificationEndDatePickerObj" 
+                                                (ngModelChange)="onDateChangeDate('certification_end_date',  item,  item.end_date)"
+                                                
+                                            ></li-ionic4-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <!-- Duration -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Duration (in days)</ion-label>
+                                            <ion-input name="certification[{{i}}][duration]" [(ngModel)]="item.duration" clearInput ></ion-input>
+                                        </div>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Description</ion-label>
+                                            <ion-textarea auto-grow="true" name="certification[{{i}}][description]" [(ngModel)]="item.description" clearInput></ion-textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ion-card>
+
+                        <!-- experience -->
+                        <ion-card>
+                            <div *ngFor="let item of model.experience; let i = index;  let first = first; let last = last;  let odd = odd" [ngClass]="{ 'odd-pdc-row': odd}">
+                                <ion-card-header [ngClass]="{'sub-more-header': !first}">
+                                    Experience <span [hidden]="first">{{i}}</span>
+                                    <!-- Add Button -->
+                                    <ion-button class="add-btn ion-float-right" color="warning" size="small" (click)="addItem(model.experience, item)" *ngIf="first || last">
+                                        <ion-icon ios="ios-add" md="md-add"></ion-icon>
+                                    </ion-button>
+                                    <!-- Minus Button -->
+                                    <ion-button  class="minus-btn ion-float-right" color="danger" size="small" (click)="removeItem(i, $event, model.experience, '', '');" [hidden]="first">
+                                        <ion-icon ios="ios-remove" md="md-remove"></ion-icon>
+                                    </ion-button>
+                                </ion-card-header>
+
+                                <div class="row">
+                                    <!-- Name -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Name</ion-label>
+                                            <ion-input name="experience[{{i}}][name]" [(ngModel)]="item.name" clearInput></ion-input>
+                                        </div>
+                                    </div>
+
+                                    <!-- Start Date -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Start Date</ion-label>
+                                            <li-ionic4-datepicker 
+                                                name="experience[{{i}}][start_date]" 
+                                                [(ngModel)]="item.start_date"
+                                                [inputDateConfig]="startdatePickerObj" 
+                                                (ngModelChange)="onDateChangeDate('experience_start_date', item,  item.start_date)"
+                                                
+                                            ></li-ionic4-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <!-- End Date -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">End Date</ion-label>
+                                            <li-ionic4-datepicker 
+                                                name="experience[{{i}}][end_date]" 
+                                                [(ngModel)]="item.end_date"
+                                                [inputDateConfig]="experienceEndDatePickerObj" 
+                                                (ngModelChange)="onDateChangeDate('experience_end_date', item,  item.end_date)"
+                                                
+                                            ></li-ionic4-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <!-- Duration -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Duration (in days)</ion-label>
+                                            <ion-input name="experience[{{i}}][duration]" [(ngModel)]="item.duration" clearInput ></ion-input>
+                                        </div>
+                                    </div>
+
+                                    <!-- Position -->
+                                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Position</ion-label>
+                                            <ion-input name="experience[{{i}}][position]" [(ngModel)]="item.position" clearInput ></ion-input>
+                                        </div>
+                                    </div>
+
+                                    <!-- Leave Reason -->
+                                    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                                        <div class="form-item">
+                                            <ion-label position="floating">Leave Reason</ion-label>
+                                            <ion-textarea auto-grow="true" name="experience[{{i}}][leave_reason]" [(ngModel)]="item.leave_reason" clearInput></ion-textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ion-card>
+
+                        <!-- Resume upload -->
+                        <div class="row ion-padding">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="file_upload form-item">
+                                    <ion-label position="floating">Resume</ion-label>
+                                    <div class="normal-file-uploading">
+                                        <span class="upload-file resume">
+                                            Upload resume
+                                            <input [(ngModel)]="model.resume2" type="file" (change)="normalFileUpload($event, model.resume2, 'resume')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept=".pdf,.doc,.docx">
+                                        </span>
+                                        <!-- accept=".pdf,.jpg,.doc,.docx" -->
+
+                                        <span [hidden]="!uploadresumePathShow" class="file-name">{{model.resume2}}</span>
+
+                                        <ion-button class="download-resume" shape="round" *ngIf="model.resume && !uploadresumePathShow" (click)="onExport('single', model.resume)">
+                                            <ion-icon slot="start" name="download"></ion-icon>
+                                            Download Your Resume 
+                                        </ion-button>
+
+                                        <!-- <span [hidden]="!model.resume" class="file-name">{{model.resume}}</span> -->
+
+                                        <span class="image-clear" (click)="fileCross(model.resume2, 'resume')" [hidden]="!model.resume && !model.resume2">
+                                            <ion-icon name="close"></ion-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- submit button -->
+                        <div class="row ion-padding-bottom submit-button-wrapper">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ion-text-center">
+                                <div class="custom-btn">
+                                    <!-- <ion-button class="reload clear-form" size="default" fill="clear" tooltip="Clear" flow="up" (click)="reloadPageAlert()">
+                                        <ion-icon name="backspace"></ion-icon>
+                                        Clear
+                                    </ion-button> -->
+
+                                    <ion-button class="submit" size="default"
+                                    type="submit"  [disabled]="!studentsAddForm.valid"
+                                    tooltip="Submit" flow="up">
+                                    <ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+                                    <span class="submitText">{{form_submit_text}}</span>
+                                    </ion-button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- Register Photo -->
+                <!-- <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    
+                </div> -->
+			</div>
+		</div>
+		
+	</div>
+	<!-- Student register page end -->
+
+
+	<!-- common footer show -->
+	<common-footer></common-footer>
+</ion-content>

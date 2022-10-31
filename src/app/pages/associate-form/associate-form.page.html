@@ -1,0 +1,276 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+	<!-- common header show -->
+	<common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+
+	<!-- Associate us page start -->
+	<div class="associate-us-wrapper student-register-wrapper only-associate" >
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-7 col-lg-8 " [ngClass]="{'disabled': form_submit_text == 'Submitting'}">
+					<form  #associateAddForm="ngForm" (ngSubmit)="onSubmit(associateAddForm)" class="student-register-inner">
+						<h6>Associate With Us</h6>
+						<div class="row ion-padding">
+							<div class="col-xs-12 col-sm-12">
+								<div class="assessment-inner">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+											<div class="associate-title">
+												<ion-label position="floating">Choose Associate : <sup>*</sup> </ion-label>
+												<ng-select  #companyNameSerch
+													[loading]="selectLoading"
+													[dropdownPosition]="'bottom'"
+													placeholder="Please Select Associate"
+													[items]="companyList"
+													bindLabel="name"
+													name="company_category_id"
+													bindValue="id"
+													[searchable]="false"
+													[(ngModel)]="model.company_category_id"
+													(change)="onChangeselectDropdown(model.company_category_id, 'associate')"
+													>
+													<ng-template ng-header-tmp>
+														<input placeholder="Search" class="dropdown-custom-search" type="text" (input)="companyNameSerch.filter($event.target.value)" [autofocus]="true" />
+													</ng-template>
+												</ng-select>
+											</div>
+										</div>
+									</div>
+									<!-- Skilling Partner -->
+									<ion-card class="wrapp-associate-field" *ngIf="model.company_category_id == 1">
+										<ion-card-header class="main-header">
+											Skilling Partner
+										</ion-card-header>
+										<div class="row">
+											<!-- Company Name -->
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+												<div class="form-item">
+													<ion-label position="floating">Skilling Partner <sup>*</sup></ion-label>
+													<ion-input name="name" [(ngModel)]="model.name" clearInput required></ion-input>
+												</div>
+											</div>
+											<!-- Skills -->
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+												<div class="form-item">
+													<ion-label position="floating">Skills <sup>*</sup></ion-label>
+													<ion-input name="skill" [(ngModel)]="model.skill" clearInput required></ion-input>
+												</div>
+											</div>
+											<!-- City -->
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+												<div class="form-item">
+													<ion-label position="floating">City</ion-label>
+													<ion-input name="city" [(ngModel)]="model.city" clearInput ></ion-input>
+												</div>
+											</div>
+
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+												<ion-card class=contact-dtls>
+												
+													<ion-card-header class="sub-header ">
+														Contact Details
+													</ion-card-header>
+												
+													<div class="row">
+														<!-- Name -->
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+															<div class="form-item">
+																<ion-label position="floating">Name <sup>*</sup></ion-label>
+																<ion-input name="contact_name" [(ngModel)]="model.contact_name" clearInput required></ion-input>
+															</div>
+														</div>
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+															<div class="form-item">
+																<ion-label position="floating">Mobile <sup>*</sup> </ion-label>
+																<ion-input OnlyNumber="true" type="tel" minlength="10" maxlength="10" name="contact_phone" [(ngModel)]="model.contact_phone"
+																clearInput required></ion-input>
+															</div>
+														</div>
+														<!-- Email -->
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+															<div class="form-item">
+																<ion-label position="floating">Email Id <sup>*</sup></ion-label>
+																<ion-input type="email" name="contact_email" [(ngModel)]="model.contact_email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" clearInput  required></ion-input>
+															</div>
+														</div>
+													</div>
+												
+												</ion-card>
+											</div>
+										</div>
+									</ion-card>
+
+									<!-- Hiring Partner -->
+									<ion-card class="wrapp-associate-field" *ngIf="model.company_category_id == 2">
+										<ion-card-header class="main-header">
+											Hiring Partner
+										</ion-card-header>
+										<div class="row">
+											<!-- Company Name -->
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+												<div class="form-item">
+													<ion-label position="floating">Hiring Partner <sup>*</sup></ion-label>
+													<ion-input name="name" [(ngModel)]="model.name" clearInput required></ion-input>
+												</div>
+											</div>
+											<!-- City -->
+											<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+												<div class="form-item">
+													<ion-label position="floating">City</ion-label>
+													<ion-input name="city" [(ngModel)]="model.city" clearInput ></ion-input>
+												</div>
+											</div>
+
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+												<ion-card class=contact-dtls>
+												
+													<ion-card-header class="sub-header">
+														Contact Details
+													</ion-card-header>
+												
+													<div class="row">
+														<!-- Name -->
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+															<div class="form-item">
+																<ion-label position="floating">Name <sup>*</sup></ion-label>
+																<ion-input name="contact_name" [(ngModel)]="model.contact_name" clearInput required></ion-input>
+															</div>
+														</div>
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+															<div class="form-item">
+																<ion-label position="floating">Mobile <sup>*</sup></ion-label>
+																<ion-input OnlyNumber="true" type="tel" minlength="10"maxlength="10" name="contact_phone" [(ngModel)]="model.mobile" clearInput required></ion-input>
+															</div>
+														</div>
+														<!-- Email -->
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+															<div class="form-item">
+																<ion-label position="floating">Email Id <sup>*</sup></ion-label>
+																<ion-input type="email" name="contact_email" [(ngModel)]="model.contact_email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" clearInput email required></ion-input>
+															</div>
+														</div>
+													</div>
+												</ion-card>
+											</div>
+										</div>
+									</ion-card>
+								</div>
+							</div>
+						</div>
+						<div class="submit-button-wrapper">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ion-text-center">
+									<div class="custom-btn">
+										<!-- <ion-button class="reload clear-form" size="default" fill="clear" tooltip="Clear" flow="up" (click)="reloadPageAlert()">
+											<ion-icon name="backspace"></ion-icon>
+											Clear
+										</ion-button> -->
+
+										<ion-button class="submit" size="default"
+										type="submit" 
+										[disabled]="!associateAddForm.valid"
+										tooltip="Submit" flow="up">
+										<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+										<span class="submitText">{{form_submit_text}}</span>
+										</ion-button>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				
+				<!-- info -->
+				<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4" *ngIf="!editLoading">
+
+					<!-- Latest skill -->
+					<div class="detailspage-right-item recommended-skill">
+						<h3>Latest Skill</h3>
+						<div class="job-list-inner">
+							<ul>
+								<li *ngFor="let item of commonPageData?.latest_skill; let i = index;">
+									<div class="list-item" [routerLink]="['/', 'skill-details', 'skill', item.id]" > 
+										<div class="image">
+											<a href="javascript:void(0)">
+												<img *ngIf="item?.image" src="{{file_url}}/{{item?.image}}" /> 
+												<img *ngIf="!item?.image" src="assets/images/no-bg-img.jpg" /> 
+											</a>
+										</div>
+										<div class="list-item-content">
+											<div class="list-item-content-inner">
+												<h4 class="title">{{item?.name}} </h4>
+												<p>{{item?.short_description}}</p>
+												<div class="price" *ngIf="item?.price != 0">
+													<h4> <span class="rupis">&#8377;</span> {{item?.price}}</h4>
+												</div>
+												<div class="custom-btn">
+													<ion-button size="default">
+														<span class="submitText" *ngIf="item?.price != 0">Buy</span>
+														<span class="submitText" *ngIf="item?.price == 0">View</span>
+													</ion-button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li *ngIf="commonPageData?.latest_skill && commonPageData?.latest_skill.length == 0">
+									<p class="no-rightside-data"> No Skill Found</p>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Latest job -->
+					<div class="detailspage-right-item ">
+						<h3>Latest Job</h3>
+						<div class="job-list-inner">
+							<ul>
+								<li *ngFor="let item of commonPageData?.latest_job; let i = index;">
+									<div class="job-item"  >
+										<div class="company-logo">
+											<img *ngIf="item?.company_logo" src="{{file_url}}/{{item?.company_logo}}" /> 
+											<img *ngIf="!item?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+										</div>
+										<div class="job-content">
+											<h5>{{item?.name}}</h5>
+											<p>
+												<span *ngIf="item?.industry_type">
+													{{item?.industry_type}}
+												</span>
+												<span *ngIf="item?.job_type">
+													{{item?.job_type}}
+												</span>
+												<span *ngIf="item?.comma_separeted_qualification">
+													{{item?.comma_separeted_qualification}}
+												</span>
+												<span *ngIf="item?.city">
+													{{item?.city}}
+												</span>
+											</p>
+										</div>
+										<div class="view-job-button">
+											<ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]">
+												<span class="submitText">View</span>
+											</ion-button>
+										</div>
+									</div>
+								</li>
+								<li *ngIf="commonPageData?.latest_job && commonPageData?.latest_job.length == 0">
+									<p class="no-rightside-data">No Job Found</p>
+								</li>
+							</ul>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+					
+		</div>
+	</div>
+
+	<!-- Assciate us page start -->
+
+	<!-- common footer show -->
+	<common-footer></common-footer>
+</ion-content>

@@ -1,0 +1,332 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!--------- details section start ------- -->
+  <div class="detailsPage-wrapper job-details table-list-page">
+
+    <!-- subheader -->
+    <div class="listing-header-title">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+              <h6>My Attempted Assessment List</h6>
+              <div class="list-header-search">
+                <!-- desktop serach -->
+                <div class="list-info-item search-list desktop">
+                    <div class="list-content">
+                      <div class="search-list-inner">
+                        <ion-searchbar placeholder="Search"  debounce="1000" [(ngModel)]="searchTerm" (ionChange)="searchList($event)"> </ion-searchbar>
+                        <!-- <div class="search-btn">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                <!-- mobile serach -->
+                <div class="list-info-item search-list mobile" *ngIf="isMobileSearch">
+                    <div class="list-content">
+                      <div class="search-list-inner">
+                        <ion-searchbar placeholder="Search"  debounce="1000" [(ngModel)]="searchTerm" (ionChange)="searchList($event)"> </ion-searchbar>
+                        <!-- <div class="search-btn">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <span class="mobile-search-btn" [ngClass]="{'active':isMobileSearch}" (click)="mobileSearch();" >
+                    <i matRipple class="fa fa-search" aria-hidden="true"></i>
+                  </span>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-page-inner">
+      <div class="container">
+        <div class="row">
+
+          <!-- skeleton loading  start-->
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" *ngIf="viewLoadData">
+            <div class="detailspage-image">
+              <ion-skeleton-text animated style="width: 100%; height: 150px;"></ion-skeleton-text>
+            </div>
+
+            <div class="detailsPage-content sub-header-details" >
+             
+            </div>
+
+            <div class="detailsPage-content item" >
+              <h3 class="heading">
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" *ngIf="viewLoadData">
+              <div class="detailspage-right-item">
+                <h3>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </h3>
+                <ul>
+                  <li>
+                    <h5>
+                      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h5>
+                    <p>
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="detailspage-right-item">
+                <h3>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </h3>
+                <ul>
+                  <li>
+                    <h5>
+                      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h5>
+                    <p>
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              
+          </div>
+          <!-- skeleton loading  end-->
+
+          <!-- content -->
+          <div class="col-xs-12 col-sm-8 col-md-7 col-lg-8">
+            <div style="overflow-x:auto;">
+              <table class="list-page-table">
+                <thead [ngClass]="{'disabled-only-pointer':isListLoading}">
+                  <tr>
+        
+                    <th style="padding-left: 3px;">
+                      <span>
+                          <ion-icon style="zoom:2.0;" name="information"></ion-icon>
+                      </span>
+                    </th>
+        
+                    <!-- table header -->
+                    <th *ngFor="let th of tableHeaderData " [hidden]="th.is_default == 0" (click)="th.is_sortable == 1 && isSortTableHeader(tableHeaderData, th)">
+                      <span>{{th.display_name}}</span>
+                      <!-- sorting header -->
+                      <!-- <span *ngIf="th.is_sortable == 1">
+                        <span class="asc-sort" [hidden]="th.sortingButtonName == 'desc'" [ngClass]="{'active': th.sortingButtonName == 'asc'}">
+                          <ion-icon name="arrow-dropup"></ion-icon>
+                        </span>
+                        <span class="desc-sort" [hidden]="th.sortingButtonName == 'asc'" [ngClass]="{'active': th.sortingButtonName == 'desc'}">
+                          <ion-icon name="arrow-dropdown"></ion-icon>
+                        </span>
+                      </span> -->
+                    </th>
+        
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of fetchItems; let i = index" [hidden]="isListLoading" [ngClass]="{'hilight_activated': (activeHighlightIndex == listAlldata.from + i), 'delete_item_effect':item?.deleteLodershow}">
+                      <td data-title="ID">
+                        <!-- <span>{{i + 1}}</span> -->
+                        <span>{{listAlldata.from + i}}</span>
+                      </td>
+        
+                      <!-- table data -->
+                      <!-- <td *ngFor="let th of tableHeaderData | filtermulti: [{is_default:1},{is_display:1}]"> -->
+                        <td *ngFor="let th of tableHeaderData " [hidden]="th.is_default == 0">
+        
+                          <!-- updated_on date -->
+                          <span *ngIf="th.column_name === 'updated_on'">
+                            {{item[th.column_name] | date:'dd MMM yyy : h:mm a'}}
+                          </span>
+        
+                          <!-- added_on date -->
+                          <span *ngIf="th.column_name === 'last_attempted_on'">
+                            {{item[th.column_name] | date:'dd MMM yyy '}}
+                          </span>
+                          
+
+                          <!-- company_logo -->
+                          <span *ngIf="th.column_name === 'company_logo'" class="list-page-image">
+                            <img *ngIf="item?.company_logo" class="img-scale employee-img profile list-show-img" src="{{file_url}}/{{item.company_logo}}" />
+        
+                            <img *ngIf="!item?.company_logo" class="img-scale employee-img profile list-show-img" src="assets/images/no-bg-img.jpg" />                  
+                          </span>
+        
+                          <!--all  common   -->
+                          <span *ngIf="th.column_name !== 'updated_on' && th.column_name !== 'last_attempted_on' && th.column_name !== 'company_logo'"> {{ item[th.column_name] }} </span>
+                        </td>
+        
+                  </tr>
+                  <!-- [hidden]="fetchItems?.length > 0  -->
+                  <tr [hidden]="!isListLoading" class="loading-table-data list">
+                    <td colspan="100">
+                        Data is loading...
+                    </td>
+                  </tr>
+                  <tr *ngIf="fetchItems?.length == 0 && !isListLoading" class="loading-table-data list">
+                    <td colspan="100">
+                        No Data Found
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- pagination -->
+            <div class="list-page-pagination" *ngIf="pager.pages && pager.pages.length">
+
+              <!-- referesh button -->
+              <span (click)="onRefreshPage($event)" tooltip="Refresh" flow="up" delay="500" class="list-refersh">
+                <ion-icon class="icon" name="refresh"></ion-icon>
+              </span>
+  
+              <ul class="pagination"> <!-- *ngIf="pager.pages && pager.pages.length" -->
+                  <li class="circle-border" [ngClass]="{disabled:pager.currentPage === 1}">
+                      <a (click)="setPage(1)" tooltip="First" flow="up" delay="500">
+                        <!-- First -->
+                        <ion-icon name="skip-backward"></ion-icon>
+                      </a>
+                  </li>
+                  <li class="circle-border" [ngClass]="{disabled:pager.currentPage === 1}">
+                      <a (click)="setPage(pager.currentPage - 1)" tooltip="Previous" flow="up" delay="500">
+                        <!-- Previous -->
+                        <ion-icon name="arrow-dropleft-circle"></ion-icon>
+                      </a>
+                  </li>
+                  <li> <span class="ran-separator pull-right margin-top-3"></span> </li>
+                  <li>
+                      Page <a>{{ pager.currentPage }}</a> of {{ pager.totalPages }} 
+                  </li>
+                  <li> <span class="ran-separator pull-right margin-top-3"></span> </li>
+                  <li class="circle-border" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                      <a (click)="setPage(pager.currentPage + 1)" tooltip="Next" flow="up" delay="500">
+                        <!-- Next -->
+                        <ion-icon name="arrow-dropright-circle"></ion-icon>
+                      </a>
+                  </li>
+                  <li class="circle-border" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                      <a (click)="setPage(pager.totalPages)" tooltip="Last" flow="up" delay="500">
+                        <!-- Last -->
+                        <ion-icon name="skip-forward"></ion-icon>
+                      </a>
+                  </li>
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- info -->
+          <div class="col-xs-12 col-sm-4 col-md-5 col-lg-4">
+
+            <!-- Latest Skill -->
+            <div class="detailspage-right-item recommended-skill">
+              <h3>Latest Skill</h3>
+              <div class="job-list-inner">
+                <ul>
+                  <li *ngFor="let item of commonPageData?.latest_skill; let i = index;">
+                    <div class="list-item" [routerLink]="['/', 'skill-details', 'skill', item.id]" > 
+                      <div class="image">
+                        <a href="javascript:void(0)">
+                          <img *ngIf="item?.image" src="{{file_url}}/{{item?.image}}" /> 
+                          <img *ngIf="!item?.image" src="assets/images/no-bg-img.jpg" /> 
+                        </a>
+                      </div>
+                      <div class="list-item-content">
+                        <div class="list-item-content-inner">
+                          <h4 class="title">{{item?.name}} </h4>
+                          <p>{{item?.short_description}}</p>
+                          <div class="price" *ngIf="item?.price != 0">
+                            <h4> <span class="rupis">&#8377;</span> {{item?.price}}</h4>
+                          </div>
+                          <div class="custom-btn">
+                            <ion-button size="default">
+                              <span class="submitText" *ngIf="item?.price != 0">Buy</span>
+                              <span class="submitText" *ngIf="item?.price == 0">View</span>
+                            </ion-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="commonPageData?.latest_skill && commonPageData?.latest_skill.length == 0">
+                    <p class="no-rightside-data"> No Skill Found</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Latest job -->
+            <div class="detailspage-right-item">
+              <h3>Latest Job</h3>
+              <div class="job-list-inner">
+                <ul>
+                  <li *ngFor="let item of commonPageData?.latest_job; let i = index;">
+                    <div class="job-item"  >
+                      <div class="company-logo">
+                        <img *ngIf="item?.company_logo" src="{{file_url}}/{{item?.company_logo}}" /> 
+                        <img *ngIf="!item?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+                      </div>
+                      <div class="job-content">
+                        <h5>{{item?.name}}</h5>
+                        <p>
+                          <span *ngIf="item?.industry_type">
+                            {{item?.industry_type}}
+                          </span>
+                          <span *ngIf="item?.job_type">
+                            {{item?.job_type}}
+                          </span>
+                          <span *ngIf="item?.comma_separeted_qualification">
+                            {{item?.comma_separeted_qualification}}
+                          </span>
+                          <span *ngIf="item?.city">
+                            {{item?.city}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="view-job-button">
+                        <ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]">
+                          <span class="submitText">View</span>
+                        </ion-button>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="commonPageData?.latest_job && commonPageData?.latest_job.length == 0">
+                    <p class="no-rightside-data">No Job Found</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+                
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- details section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>

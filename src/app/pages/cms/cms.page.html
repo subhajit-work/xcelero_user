@@ -1,0 +1,229 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!--------- details section start ------- -->
+  <div class="detailsPage-wrapper assessment job-details cms-page">
+
+    <!-- subheader -->
+    <div class="detals-subheader" *ngIf="!viewLoadData">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="detals-subheader-inner ">
+              <div class="company-info">
+                <h4>{{viewData?.name}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-page-inner">
+      <div class="container">
+        <div class="row">
+
+          <!-- skeleton loading  start-->
+          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" *ngIf="viewLoadData">
+
+            <div class="detailsPage-content sub-header-details" >
+              <div class="sub-header-details">
+                <div class="header-item">
+                  <ul>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                    <li>
+                      <h5> 
+                        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                      </h5> 
+                      <p>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="detailsPage-content item" >
+              <h3 class="heading">
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" *ngIf="viewLoadData">
+              <div class="detailspage-right-item">
+                <h3>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </h3>
+                <ul>
+                  <li>
+                    <h5>
+                      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h5>
+                    <p>
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="detailspage-right-item">
+                <h3>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </h3>
+                <ul>
+                  <li>
+                    <h5>
+                      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                    </h5>
+                    <p>
+                      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              
+          </div>
+          <!-- skeleton loading  end-->
+
+          <!-- content -->
+          <div class="col-xs-12 col-sm-8 col-md-7 col-lg-8">
+
+            <!-- faq content -->
+            <div class="faq-content-wrapper  assessment-inner" >
+              <!-- <h5>{{viewData?.name}}</h5> -->
+              <div class="cms-image" *ngIf="viewData?.image">
+                <img src="{{file_url}}/{{viewData?.image}}" alt="image">
+              </div>
+              <p [innerHTML]="viewData?.description | safeHtml"></p>
+            </div>
+
+          </div>
+
+          <!-- info -->
+          <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4" *ngIf="!viewLoadData">
+
+            <!-- Latest skill -->
+            <div class="detailspage-right-item recommended-skill">
+              <h3>Latest Skill</h3>
+              <div class="job-list-inner">
+                <ul>
+                  <li *ngFor="let item of commonPageData?.latest_skill; let i = index;">
+                    <div class="list-item" [routerLink]="['/', 'skill-details', 'skill', item.id]" > 
+                      <div class="image">
+                        <a href="javascript:void(0)">
+                          <img *ngIf="item?.image" src="{{file_url}}/{{item?.image}}" /> 
+                          <img *ngIf="!item?.image" src="assets/images/no-bg-img.jpg" /> 
+                        </a>
+                      </div>
+                      <div class="list-item-content">
+                        <div class="list-item-content-inner">
+                          <h4 class="title">{{item?.name}} </h4>
+                          <p>{{item?.short_description}}</p>
+                          <div class="price" *ngIf="item?.price != 0">
+                            <h4> <span class="rupis">&#8377;</span> {{item?.price}}</h4>
+                          </div>
+                          <div class="custom-btn">
+                            <ion-button size="default">
+                              <span class="submitText" *ngIf="item?.price != 0">Buy</span>
+                              <span class="submitText" *ngIf="item?.price == 0">View</span>
+                            </ion-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="commonPageData?.latest_skill && commonPageData?.latest_skill.length == 0">
+                    <p class="no-rightside-data"> No Skill Found</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Latest job -->
+            <div class="detailspage-right-item ">
+              <h3>Latest Job</h3>
+              <div class="job-list-inner">
+                <ul>
+                  <li *ngFor="let item of commonPageData?.latest_job; let i = index;">
+                    <div class="job-item"  >
+                      <div class="company-logo">
+                        <img *ngIf="item?.company_logo" src="{{file_url}}/{{item?.company_logo}}" /> 
+                        <img *ngIf="!item?.company_logo" src="assets/images/no-bg-img.jpg" /> 
+                      </div>
+                      <div class="job-content">
+                        <h5>{{item?.name}}</h5>
+                        <p>
+                          <span *ngIf="item?.industry_type">
+                            {{item?.industry_type}}
+                          </span>
+                          <span *ngIf="item?.job_type">
+                            {{item?.job_type}}
+                          </span>
+                          <span *ngIf="item?.comma_separeted_qualification">
+                            {{item?.comma_separeted_qualification}}
+                          </span>
+                          <span *ngIf="item?.city">
+                            {{item?.city}}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="view-job-button">
+                        <ion-button size="default" type="button" [routerLink]="['/', 'job-details', 'job', item.id]">
+                          <span class="submitText">View</span>
+                        </ion-button>
+                      </div>
+                    </div>
+                  </li>
+                  <li *ngIf="commonPageData?.latest_job && commonPageData?.latest_job.length == 0">
+                    <p class="no-rightside-data">No Job Found</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- details section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>
+

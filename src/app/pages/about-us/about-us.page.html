@@ -1,0 +1,82 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+  <!-- common header show -->
+  <common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  
+  <!--------- details section start ------- -->
+  <div class="detailsPage-wrapper about-us">
+    <!-- <div class="container-fluid">
+      <div class="row"> -->
+    <div class="parallax">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="content">
+              <div class="service-info">
+                <h3>About Xcelero</h3>
+              </div>
+              <p [innerHTML]="viewData?.short_description | safeHtml"></p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+      <!-- </div>
+      <div class="row"> -->
+    <div class="content-uppar">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="content-description">
+              <div class="service-info">
+                <h3>Who we are?</h3>
+              </div>
+              <p [innerHTML]="viewData?.description | safeHtml"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- </div> -->
+    <div class="know-about-parson">
+      <div class="container">
+        <div class="row" >
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 service-info">
+            <h3>Core Team</h3>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" *ngFor="let item of viewData?.our_team">
+            
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 image-sec">
+              <div class="image-part">
+                <!-- <span class="img-heading">{{item?.name}}</span> -->
+                <img *ngIf="item?.image" src="{{file_url}}/{{item?.image}}" />
+                <img *ngIf="!item?.image" src="/assets/images/no-bg-img.jpg" />
+              </div>
+              <div class="founder-details">
+                  <h4 class="sc_team_item_title">{{item?.name}}</h4>
+                  <h5 class="sc_team_item_subtitle">{{item?.short_description}}</h5>
+              </div>
+            </div>
+    
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="content-part">
+                <!-- <h3 class="content-heading"></h3> -->
+                <p [innerHTML]="item?.description | safeHtml"></p>
+              </div>
+            </div>
+          </div>
+            
+        </div>
+        
+      </div>
+    </div>
+    <!-- </div> -->
+
+    
+  </div>
+  <!-- details section end -->
+
+  <!-- common footer show -->
+  <common-footer></common-footer>
+
+</ion-content>

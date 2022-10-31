@@ -1,0 +1,166 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollHedearFix($event)">
+	<!-- common header show -->
+	<common-header [ngClass]="{'fix-header':isFixedHeader}"></common-header>
+  	
+	<!-- Checkout section start -->
+	<div class="checkoutpage-wrapper">
+
+
+		<div class="container">
+			<div class="common-box">
+				<div class="row">
+					<!-- Course Heading -->
+					<div class="col-lg-12">
+						<h6 class="checkout_complt_head">Order Details</h6>
+					</div>
+				</div>
+
+				<div *ngIf="!viewLoadData">
+					<div class="row">
+						<!-- Checkout product details -->
+						<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+							<div class="ion-padding">
+								<div class="row">
+									<!-- Product image -->
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+										<img *ngIf="viewData?.image" src="{{file_url}}/{{viewData?.image}}" />
+
+										<img *ngIf="!viewData?.image" src="assets/images/no-bg-img.jpg" /> 
+									</div>
+									<!-- Product details -->
+									<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+										<h4>{{viewData?.name}}</h4>
+										<p>{{viewData?.short_description}}</p>
+									</div>
+								</div>
+	
+								<!-- Coupon part -->
+								<!-- <div class="row">
+									<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+										<ion-input clearInput placeholder="Have a coupon code?"></ion-input>
+									</div>
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+										<ion-button color="success" class="ion-no-margin" expand="block" fill="outline">Apply</ion-button>
+									</div>
+								</div> -->
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+							<div class="checkout_price_bx">
+								<h6>Order Summary</h6>
+								<div class="checkout_price_bx_detail">
+									<div class="checkout_price_bx_detail_single">
+										<div class="checkout_price_bx_detail_single_lft">
+											Subtotal
+										</div>
+										<div class="checkout_price_bx_detail_single_right">
+											&#8377; {{viewData?.price}}
+										</div>
+									</div>
+									<div class="checkout_price_bx_detail_single">
+										<div class="checkout_price_bx_detail_single_lft">
+											GST ( {{viewData?.gst}}% )
+										</div>
+										<div class="checkout_price_bx_detail_single_right">
+											&#8377; 
+											{{gstCalculation}}
+										</div>
+									</div>
+									<div class="checkout_price_bx_detail_single">
+										<div class="checkout_price_bx_detail_single_lft">
+											<strong>Total</strong>
+										</div>
+										<div class="checkout_price_bx_detail_single_right">
+											&#8377; 
+											{{this.allTotal}}
+										</div>
+									</div>
+									<div class="checkout_price_submit">
+										<ion-button expand="block" (click)="oneOrder()">Continue Your Order</ion-button>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- skeleton loading start -->
+				<div *ngIf="viewLoadData">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+							<div class="ion-padding">
+								<div class="row">
+									<!-- Product image -->
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+										<ion-skeleton-text animated style="width: 100%; height: 150px;"></ion-skeleton-text>
+									</div>
+									<!-- Product details -->
+									<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+										<h4> 
+											<ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text>
+										</h4>
+										<p>
+											<ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
+										</p>
+									</div>
+								</div>
+	
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+							<div class="checkout_price_bx">
+								<h6>
+									<ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+								</h6>
+								<div class="checkout_price_bx_detail">
+									<div class="checkout_price_bx_detail_single">
+										<div class="checkout_price_bx_detail_single_lft">
+											<ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text>
+										</div>
+										<div class="checkout_price_bx_detail_single_right">
+											<ion-skeleton-text animated style="width: 20%;"></ion-skeleton-text>
+										</div>
+									</div>
+									<div class="checkout_price_bx_detail_single">
+										<div class="checkout_price_bx_detail_single_lft">
+											<ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+										</div>
+										<div class="checkout_price_bx_detail_single_right">
+											<ion-skeleton-text animated style="width: 10%;"></ion-skeleton-text>
+										</div>
+									</div>
+									<div class="checkout_price_bx_detail_single">
+										<div class="checkout_price_bx_detail_single_lft">
+											<strong>
+												<ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+											</strong>
+										</div>
+										<div class="checkout_price_bx_detail_single_right">
+											<ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text>
+										</div>
+									</div>
+									<div class="checkout_price_submit">
+										<ion-skeleton-text animated style="width: 100%; height: 30px;"></ion-skeleton-text>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- skeleton loading end -->
+
+			</div>
+				
+			
+		</div>
+		
+	</div>
+	<!-- Checkout section end -->
+
+
+	<!-- common footer show -->
+	<common-footer></common-footer>
+
+</ion-content>
